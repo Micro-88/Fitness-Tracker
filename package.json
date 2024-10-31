@@ -10,10 +10,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "chart.js": "^4.4.6",
     "dotenv": "^16.4.5",
     "mysql2": "^3.11.3",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "sequelize": "^6.37.5"
   },
