@@ -1,43 +1,47 @@
-'use strict';
+"use strict";
 
-require('reflect-metadata'); // Add this line
-const { AllowNull } = require('sequelize-typescript');
+require("reflect-metadata"); // Add this line
+const { AllowNull } = require("sequelize-typescript");
 
 /** @type {import('sequelize-cli').Migration} */
-'use strict';
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable("workout", {
       id: {
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      username: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
-      password: {
+      type: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      duration: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      calories: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.NOW,
       },
     });
   },
-
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable("workout");
   },
 };
