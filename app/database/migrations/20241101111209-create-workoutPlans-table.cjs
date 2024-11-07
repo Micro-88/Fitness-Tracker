@@ -1,6 +1,6 @@
 'use strict';
 
-require('reflect-metadata'); // Add this line
+require('reflect-metadata');
 const { AllowNull } = require('sequelize-typescript');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -8,13 +8,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('workoutPlans', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
       goal: {

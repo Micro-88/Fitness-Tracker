@@ -1,11 +1,9 @@
 'use strict';
 
-require('reflect-metadata'); // Add this line
+require('reflect-metadata'); 
 const { AllowNull } = require('sequelize-typescript');
 
 /** @type {import('sequelize-cli').Migration} */
-'use strict';
-
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('users', {
