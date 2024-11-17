@@ -14,7 +14,6 @@ const UserProfile: React.FC = () => {
         <h2 className={styles.username}>Ellen Joe</h2>
       </div>
 
-      {/* User details and settings section */}
       <div className={styles.detailsSection}>
         <div className={styles.detailsContainer}>
           <h1 className={styles.heading}>Profile Details</h1>
