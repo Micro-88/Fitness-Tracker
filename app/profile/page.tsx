@@ -27,8 +27,12 @@ const UserProfile: React.FC = () => {
             <span className={styles.value}>Joe</span>
           </div>
           <div className={styles.detailRow}>
-            <span className={styles.label}>Email:</span>
-            <span className={styles.value}>joe.@example.com</span>
+            <span className={styles.label}>Height:</span>
+            <span className={styles.value}>170cm</span>
+          </div>
+          <div className={styles.detailRow}>
+            <span className={styles.label}>Weight:</span>
+            <span className={styles.value}>80kg</span>
           </div>
           <button className={styles.button}>Edit Profile</button>
         </div>
