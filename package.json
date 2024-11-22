@@ -14,6 +14,7 @@
     "migrate:rollback:all": "dotenv -- sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "chart.js": "^4.4.6",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",

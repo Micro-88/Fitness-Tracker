@@ -11,7 +11,7 @@ const WorkoutPlanner: React.FC = () => {
   const [step, setStep] = useState(1);
 
   const equipmentOptions = [
-    "Barbells",
+    "Barbells", 
     "Dumbbells",
     "BodyWeight",
     "Machine",
