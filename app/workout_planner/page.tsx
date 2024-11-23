@@ -1,23 +1,24 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const WorkoutPlanner: React.FC = () => {
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
-  const [goal, setGoal] = useState('');
-  const [level, setLevel] = useState('');
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [goal, setGoal] = useState("");
+  const [level, setLevel] = useState("");
   const [equipment, setEquipment] = useState<string[]>([]);
   const [step, setStep] = useState(1);
+  const [workoutPlan, setWorkoutPlan] = useState<string | null>(null); // To display the response
 
   const equipmentOptions = [
-    "Barbells", 
+    "Barbells",
     "Dumbbells",
     "BodyWeight",
     "Machine",
     "Kettlebells",
     "Cables",
-    "Bands"
+    "Bands",
   ];
 
   const totalSteps = 6;
@@ -32,31 +33,60 @@ const WorkoutPlanner: React.FC = () => {
   };
 
   const selectAllEquipment = () => {
-    if (equipment.length === equipmentOptions.length) {
-      setEquipment([]); // Unselect all if already selected
-    } else {
-      setEquipment(equipmentOptions); // Select all
-    }
+    setEquipment((prev) =>
+      prev.length === equipmentOptions.length ? [] : equipmentOptions
+    );
   };
 
   const nextStep = () => setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
   const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 
-  // Check if current step is valid to enable the "Next" button
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return gender !== '';
+        return gender !== "";
       case 2:
-        return age !== '' && parseInt(age) > 0;
+        return age !== "" && parseInt(age) > 0;
       case 3:
-        return goal !== '';
+        return goal !== "";
       case 4:
-        return level !== '';
+        return level !== "";
       case 5:
         return equipment.length > 0;
       default:
         return true;
+    }
+  };
+
+  const handleSubmit = async () => {
+    const userInput = {
+      gender,
+      age,
+      goal,
+      level,
+      equipment,
+    };
+
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          body: `Create a workout plan for the following: Gender: ${gender}, Age: ${age}, Goal: ${goal}, Level: ${level}, Equipment: ${equipment.join(", ")}.`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate workout plan.");
+      }
+
+      const data = await response.json();
+      setWorkoutPlan(data.output);
+    } catch (error) {
+      console.error("Error generating workout plan:", error);
+      setWorkoutPlan("Failed to generate a workout plan. Please try again.");
     }
   };
 
@@ -73,14 +103,14 @@ const WorkoutPlanner: React.FC = () => {
           ></div>
         </div>
 
-        {/* Step Sections */}
+        {/* Steps */}
         {step === 1 && (
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Select Your Gender:</label>
+          <div>
+            <label className="block mb-2">Select Your Gender:</label>
             <select
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="border border-gray-600 bg-gray-700 text-white p-2 rounded w-full"
+              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
             >
               <option value="">Choose Gender</option>
               <option value="Male">Male</option>
@@ -90,25 +120,25 @@ const WorkoutPlanner: React.FC = () => {
         )}
 
         {step === 2 && (
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Enter Your Age:</label>
+          <div>
+            <label className="block mb-2">Enter Your Age:</label>
             <input
               type="number"
               value={age}
               onChange={(e) => setAge(e.target.value)}
-              className="border border-gray-600 bg-gray-700 text-white p-2 rounded w-full"
+              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
               min="1"
             />
           </div>
         )}
 
         {step === 3 && (
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Select Your Goal:</label>
+          <div>
+            <label className="block mb-2">Select Your Goal:</label>
             <select
               value={goal}
               onChange={(e) => setGoal(e.target.value)}
-              className="border border-gray-600 bg-gray-700 text-white p-2 rounded w-full"
+              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
             >
               <option value="">Choose Goal</option>
               <option value="Lose Weight">Lose Weight</option>
@@ -119,12 +149,12 @@ const WorkoutPlanner: React.FC = () => {
         )}
 
         {step === 4 && (
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Select Your Level:</label>
+          <div>
+            <label className="block mb-2">Select Your Level:</label>
             <select
               value={level}
               onChange={(e) => setLevel(e.target.value)}
-              className="border border-gray-600 bg-gray-700 text-white p-2 rounded w-full"
+              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
             >
               <option value="">Choose Level</option>
               <option value="Novice">Novice</option>
@@ -136,11 +166,11 @@ const WorkoutPlanner: React.FC = () => {
         )}
 
         {step === 5 && (
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Select Your Available Equipment:</label>
-            <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block mb-2">Select Your Available Equipment:</label>
+            <div>
               {equipmentOptions.map((item) => (
-                <label key={item} className="flex items-center">
+                <label key={item} className="block">
                   <input
                     type="checkbox"
                     checked={equipment.includes(item)}
@@ -151,33 +181,24 @@ const WorkoutPlanner: React.FC = () => {
                 </label>
               ))}
             </div>
-            <label className="flex items-center mt-3">
-              <input
-                type="checkbox"
-                checked={equipment.length === equipmentOptions.length}
-                onChange={selectAllEquipment}
-                className="mr-2"
-              />
-              Select All
-            </label>
+            <button onClick={selectAllEquipment} className="mt-2">
+              {equipment.length === equipmentOptions.length
+                ? "Unselect All"
+                : "Select All"}
+            </button>
           </div>
         )}
 
-        {/* Final Step Confirmation Message */}
         {step === 6 && (
-          <div className="mb-4 text-center">
-            <h2 className="text-xl font-semibold text-green-500">Congratulations!</h2>
-            <p className="text-gray-300 mt-2">Your workout plan has been generated.</p>
+          <div>
+            <p>Review your choices and submit to generate your workout plan.</p>
           </div>
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between mt-6">
+        <div className="mt-4 flex justify-between">
           {step > 1 && (
-            <button
-              onClick={prevStep}
-              className="bg-gray-600 text-white px-4 py-2 rounded"
-            >
+            <button onClick={prevStep} className="p-2 bg-gray-700 rounded">
               Previous
             </button>
           )}
@@ -185,21 +206,26 @@ const WorkoutPlanner: React.FC = () => {
             <button
               onClick={nextStep}
               disabled={!isStepValid()}
-              className={`px-4 py-2 rounded ${
-                isStepValid() ? "bg-green-500 text-white" : "bg-gray-500 text-gray-300 cursor-not-allowed"
+              className={`p-2 rounded ${
+                isStepValid() ? "bg-green-500" : "bg-gray-500 cursor-not-allowed"
               }`}
             >
               Next
             </button>
           ) : (
-            <button
-              onClick={() => alert('Workout plan confirmed!')}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
+            <button onClick={handleSubmit} className="p-2 bg-blue-500 rounded">
               Submit
             </button>
           )}
         </div>
+
+        {/* Display Workout Plan */}
+        {workoutPlan && (
+          <div className="mt-6 bg-gray-700 p-4 rounded">
+            <h2 className="text-lg font-bold">Generated Workout Plan:</h2>
+            <p className="mt-2">{workoutPlan}</p>
+          </div>
+        )}
       </div>
     </div>
   );
