@@ -17,9 +17,6 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      goal: {
-        type: Sequelize.ENUM('Lose Weight', 'Gain Strength', 'Gain Muscle'),
-      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

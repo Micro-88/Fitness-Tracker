@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
       },
       gender: {
-        type: Sequelize.ENUM('male', 'female', 'non-binary', 'other'),
+        type: Sequelize.ENUM('male', 'female'),
         allowNull: false,
       },
       age: {

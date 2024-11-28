@@ -66,9 +66,9 @@ const WorkoutPlanner: React.FC = () => {
       level,
       equipment,
     };
-
+  
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/workoutPlan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,13 +77,15 @@ const WorkoutPlanner: React.FC = () => {
           body: `Create a workout plan for the following: Gender: ${gender}, Age: ${age}, Goal: ${goal}, Level: ${level}, Equipment: ${equipment.join(", ")}.`,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to generate workout plan.");
       }
-
+  
       const data = await response.json();
       setWorkoutPlan(data.output);
+      console.log("Created workout plan with ID:", data.workoutPlanId); // Here, you're logging the ID of the created plan
+  
     } catch (error) {
       console.error("Error generating workout plan:", error);
       setWorkoutPlan("Failed to generate a workout plan. Please try again.");
@@ -181,49 +183,49 @@ const WorkoutPlanner: React.FC = () => {
                 </label>
               ))}
             </div>
-            <button onClick={selectAllEquipment} className="mt-2">
+            <button onClick={selectAllEquipment} className="mt-3 text-green-500">
               {equipment.length === equipmentOptions.length
-                ? "Unselect All"
+                ? "Deselect All"
                 : "Select All"}
             </button>
           </div>
         )}
 
-        {step === 6 && (
-          <div>
-            <p>Review your choices and submit to generate your workout plan.</p>
-          </div>
-        )}
-
-        {/* Navigation Buttons */}
-        <div className="mt-4 flex justify-between">
-          {step > 1 && (
-            <button onClick={prevStep} className="p-2 bg-gray-700 rounded">
-              Previous
+        <div className="mt-6 flex justify-between">
+          <button
+            onClick={prevStep}
+            disabled={step === 1}
+            className="bg-gray-600 text-white p-3 rounded"
+          >
+            Previous
+          </button>
+          {step === totalSteps ? (
+            <button
+              onClick={handleSubmit}
+              disabled={!isStepValid()}
+              className={`bg-green-500 text-white p-3 rounded ${
+                !isStepValid() && "opacity-50 cursor-not-allowed"
+              }`}
+            >
+              Generate Plan
             </button>
-          )}
-          {step < totalSteps ? (
+          ) : (
             <button
               onClick={nextStep}
               disabled={!isStepValid()}
-              className={`p-2 rounded ${
-                isStepValid() ? "bg-green-500" : "bg-gray-500 cursor-not-allowed"
+              className={`bg-blue-500 text-white p-3 rounded ${
+                !isStepValid() && "opacity-50 cursor-not-allowed"
               }`}
             >
               Next
             </button>
-          ) : (
-            <button onClick={handleSubmit} className="p-2 bg-blue-500 rounded">
-              Submit
-            </button>
           )}
         </div>
 
-        {/* Display Workout Plan */}
         {workoutPlan && (
-          <div className="mt-6 bg-gray-700 p-4 rounded">
-            <h2 className="text-lg font-bold">Generated Workout Plan:</h2>
-            <p className="mt-2">{workoutPlan}</p>
+          <div className="mt-6 p-3 bg-gray-800 rounded-lg text-center">
+            <h3 className="text-xl font-bold">Workout Plan</h3>
+            <p>{workoutPlan}</p>
           </div>
         )}
       </div>
