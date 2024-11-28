@@ -18,12 +18,7 @@ module.exports = {
         allowNull: false,
       },
       goal: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      plan: {
-        type: Sequelize.TEXT,
-        allowNull: false,
+        type: Sequelize.ENUM('Lose Weight', 'Gain Strength', 'Gain Muscle'),
       },
       createdAt: {
         type: Sequelize.DATE,
