@@ -66,9 +66,9 @@ const WorkoutPlanner: React.FC = () => {
       level,
       equipment,
     };
-  
+
     try {
-      const response = await fetch("/api/workoutPlan", {
+      const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,15 +77,13 @@ const WorkoutPlanner: React.FC = () => {
           body: `Create a workout plan for the following: Gender: ${gender}, Age: ${age}, Goal: ${goal}, Level: ${level}, Equipment: ${equipment.join(", ")}.`,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to generate workout plan.");
       }
-  
+
       const data = await response.json();
       setWorkoutPlan(data.output);
-      console.log("Created workout plan with ID:", data.workoutPlanId); // Here, you're logging the ID of the created plan
-  
     } catch (error) {
       console.error("Error generating workout plan:", error);
       setWorkoutPlan("Failed to generate a workout plan. Please try again.");
