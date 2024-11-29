@@ -41,7 +41,8 @@ Follow these steps to run the app
 2. open terminal
 3. type in the following commands
    -npm init -y
-   -npm install
    -npm install --legacy-peer-deps
+   -npm run migrate
+   -npm run seed
 4. run the app by typing
    -npm run dev
