@@ -2,12 +2,53 @@
 
 "use client";
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './Login.module.css';
 
 export default function Login() {
-  const handleSubmit = (e: React.FormEvent) => {
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    const formData = {
+      username: usernameRef.current?.value || '',
+      password: passwordRef.current?.value || '',
+    };
+
+    console.log('Submitting form data:', formData);
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Login successful:', data);
+        // Store the token in localStorage or cookies
+        localStorage.setItem('token', data.token);
+        // Redirect to the dashboard page
+        router.push('/dashboard');
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to login:', errorData);
+        setError(errorData.error || 'Failed to login');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      setError('An error occurred while logging in');
+    }
   };
 
   return (
@@ -20,14 +61,15 @@ export default function Login() {
           <form onSubmit={handleSubmit} className={styles.form}>
             <div>
               <label htmlFor="username" className={styles.label}>Username</label>
-              <input type="text" id="username" name="username" required className={styles.input} />
+              <input type="text" id="username" name="username" required className={styles.input} ref={usernameRef} />
             </div>
             <div>
               <label htmlFor="password" className={styles.label}>Password</label>
-              <input type="password" id="password" name="password" required className={styles.input} />
+              <input type="password" id="password" name="password" required className={styles.input} ref={passwordRef} />
             </div>
             <button type="submit" className={styles.button}>Login</button>
           </form>
+          {error && <p className={styles.error}>{error}</p>}
           <div className={styles.divider}>or Login using</div>
           <div className={styles.socialIcons}>
             <button className={styles.socialIcon} title="Login with Gmail">

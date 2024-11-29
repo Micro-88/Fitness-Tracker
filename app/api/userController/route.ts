@@ -29,9 +29,9 @@ export async function GET(req: NextRequest) {
 // POST /api/userController (Create user) (REGISTER)
 export async function POST(req: NextRequest) {
   try {
-    const { username, password } = await req.json();
+    const { username, password, age, gender } = await req.json();
     await sequelize.authenticate();
-    const newUser = await User.create({ username, password });
+    const newUser = await User.create({ username, password, age, gender });
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     console.error('Error creating user:', error);
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 // PUT /api/userController 
 export async function PUT(req: NextRequest) {
   try {
-    const { id, username, password } = await req.json();
+    const { id, username, password, age, gender } = await req.json();
     await sequelize.authenticate();
     const user = await User.findByPk(id as string);
     if (!user) {
@@ -50,6 +50,8 @@ export async function PUT(req: NextRequest) {
     }
     user.username = username;
     user.password = password;
+    user.age = age;
+    user.gender = gender;
     await user.save();
     return NextResponse.json(user, { status: 200 });
   } catch (error) {

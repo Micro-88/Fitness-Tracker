@@ -13,20 +13,32 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      category: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       description: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      difficulty: {
+      goal: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      level: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       equipment: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      duration: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      muscleGroup: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      instructions: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       createdAt: {
