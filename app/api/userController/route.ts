@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
     const { username, password, gender, age } = await req.json();           //added gender and age
     await sequelize.authenticate();
     const newUser = await User.create({ username, password, gender, age});  //added gender and age
-
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     console.error('Error creating user:', error);
