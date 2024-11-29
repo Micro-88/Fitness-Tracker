@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "./UserProfile.module.css";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 
 const UserProfile: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const UserProfile: React.FC = () => {
       {/* Profile image section */}
       <div className={styles.imageSection}>
         <div className={styles.profilePicture}>
-          <img src="/profile-pic.jpg" alt="User Profile" className={styles.picture} />
+          <UserCircleIcon/>
         </div>
         <h2 className={styles.username}>Ellen Joe</h2>
       </div>
