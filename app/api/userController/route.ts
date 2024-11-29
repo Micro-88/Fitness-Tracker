@@ -29,9 +29,9 @@ export async function GET(req: NextRequest) {
 // POST /api/userController (Create user) (REGISTER)
 export async function POST(req: NextRequest) {
   try {
-    const { username, password } = await req.json();
+    const { username, password, gender, age } = await req.json();           //added gender and age
     await sequelize.authenticate();
-    const newUser = await User.create({ username, password });
+    const newUser = await User.create({ username, password, gender, age});  //added gender and age
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     console.error('Error creating user:', error);

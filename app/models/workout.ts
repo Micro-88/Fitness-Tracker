@@ -1,54 +1,80 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../db_connection';
-import User from './user';
+import sequelize from '../db_connection'; // Your database instance
 
+enum Goal {                                  
+  Lose_Weight = 'Lose Weight', 
+  Gain_Strength = 'Gain Strength',
+  Gain_Muscle = 'Gain Muscle',
+}
+
+enum Level {                                  
+  Novice = 'Novice',
+  Beginner = 'Beginner',
+  Intermediate = 'Intermediate',
+  Advanced = 'Advanced',
+}
+
+enum Equipment {                                  
+  Barbells ='Barbells',
+  Dumbbells = 'Dumbbells',
+  BodyWeight = 'BodyWeight',
+  Machine = 'Machine',
+  Kettlebells = 'Kettlebells',
+  Cables = 'Cables',
+  Bands = 'Bands',
+}
 class Workout extends Model {
   declare id: number;
-  declare userId: number;
-  declare type: string;
+  declare name: string;
+  declare description: string;;
+  declare goal: Goal;                       
+  declare level: Level;
+  declare equipment: Equipment;
   declare duration: number;
-  declare intensity: string;
-  declare caloriesBurned: number;
+  declare muscleGroup: string;
+  declare instructions: string;
 }
 
 Workout.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
       primaryKey: true,
-    },
-    userId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
       allowNull: false,
-      references: {
-        model: User,
-        key: 'id',
-      },
     },
-    type: {
-      type: DataTypes.STRING(100),
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    goal: {
+      type: DataTypes.ENUM('Lose_Weight', 'Gain_Strength', 'Gain_Muscle'),
+      allowNull: false,
+    },
+    level: {
+      type: DataTypes.ENUM('Novice', 'Beginner', 'Intermediate', 'Advanced'),
+      allowNull: false,
+    },
+    equipment: {
+      type: DataTypes.ENUM('Barbells', 'Dumbbells', 'BodyWeight', 'Machine', 'Kettlebells', 'Cables', 'Bands'),
       allowNull: false,
     },
     duration: {
       type: DataTypes.INTEGER,
+    },
+    muscleGroup: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    intensity: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    caloriesBurned: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    instructions: {
+      type: DataTypes.TEXT,
     },
   },
-  {
-    sequelize,
-    tableName: 'workouts',
-  }
+  { sequelize, modelName: 'Workout' }
 );
-
-Workout.belongsTo(User, { foreignKey: 'userId' });
 
 export default Workout;

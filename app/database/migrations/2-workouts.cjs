@@ -22,7 +22,7 @@ module.exports = {
           allowNull: true,
         },
         goal: {
-          type: Sequelize.ENUM('Lose Weight', 'Gain Strength', 'Gain Muscle'),
+          type: Sequelize.ENUM('Lose_Weight', 'Gain_Strength', 'Gain_Muscle'),  //changed naming to match ENUM in @/models/workout.ts
           allowNull: false,
         },
         level: {
