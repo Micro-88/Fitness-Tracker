@@ -1,44 +1,48 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../db_connection';
-import User from './user';
+import sequelize from '../db_connection'; // Your database instance
+import User from './user'; // Use import instead of require
+import Workout from './workout'; // Use import instead of require
 
 class WorkoutPlan extends Model {
   declare id: number;
   declare userId: number;
-  declare goal: string;
-  declare plan: string;
+  declare workoutId: number;
+  declare name: string;                       
+  declare description: string;
 }
 
 WorkoutPlan.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
     },
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
-      references: {
-        model: User,
-        key: 'id',
-      },
+      references: { model: User, key: 'id' },
     },
-    goal: {
-      type: DataTypes.STRING(100),
+    workoutId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+      references: { model: Workout, key: 'id' },
+    },
+    name: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    plan: {
+    description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
   },
-  {
-    sequelize,
-    tableName: 'workoutPlans',
-  }
+  { sequelize, modelName: 'WorkoutPlan' }
 );
 
+// Associations
 WorkoutPlan.belongsTo(User, { foreignKey: 'userId' });
+WorkoutPlan.belongsTo(Workout, { foreignKey: 'workoutId' });
 
 export default WorkoutPlan;
