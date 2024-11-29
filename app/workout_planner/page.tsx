@@ -103,9 +103,9 @@ const WorkoutPlanner: React.FC = () => {
               className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
             >
               <option value="">Choose Goal</option>
-              <option value="Lose Weight">Lose Weight</option>
-              <option value="Gain Strength">Gain Strength</option>
-              <option value="Gain Muscle">Gain Muscle</option>
+              <option value="Lose_Weight">Lose Weight</option>
+              <option value="Gain_Strength">Gain Strength</option>
+              <option value="Gain_Muscle">Gain Muscle</option>
             </select>
           </div>
         )}

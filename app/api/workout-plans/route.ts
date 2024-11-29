@@ -11,14 +11,14 @@ export async function POST(req: NextRequest) {
 
     // Query the workouts table for workouts that match the user's criteria
     const workouts = await Workout.findAll({
-      where: {
-        goal: goal,
-        level: level,
-        equipment: {
-          [Op.in]: equipment, // Ensures the workout equipment is part of the user's selected equipment
-        },
-      },
-    });
+        where: {
+          [Op.or]: [
+            { goal: goal },
+            { level: level },
+            { equipment: { [Op.in]: equipment } }
+          ]
+        }
+      });
 
     if (workouts.length === 0) {
       return NextResponse.json(
