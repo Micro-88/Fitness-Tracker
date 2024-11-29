@@ -1,44 +1,51 @@
-// app/Login/page.tsx
-
 "use client";
 
-import React from 'react';
-import styles from './Login.module.css';
+import React, { useState } from 'react';
 
-export default function Login() {
+const Login: React.FC = () => {
+  const [rememberMe, setRememberMe] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Add login logic here
   };
 
   return (
-    <div className={styles.container}>
-      {/* Background image for left section */}
-      <div className={styles.imageSection} style={{ backgroundImage: "url('/workout2.jpg')" }}></div>
-      <div className={styles.formSection}>
-        <div className={styles.formContainer}>
-          <h1 className={styles.heading}>Login</h1>
-          <form onSubmit={handleSubmit} className={styles.form}>
+    <div className="flex flex-col md:flex-row h-screen">
+      {/* Background image for top section (full height on mobile, top half on large screens) */}
+      <div className="w-full h-1/2 md:w-3/4 md:h-full bg-cover bg-center" style={{ backgroundImage: "url('/workout2.jpg')" }}></div>
+      
+      {/* Form Section on the bottom (full height on mobile, bottom quarter on large screens) */}
+      <div className="w-full h-1/2 md:w-1/4 md:h-full flex justify-center items-center bg-[#1d1919] p-4">
+        <div className="w-full max-w-[300px] text-left">
+          <h1 className="text-4xl mb-8 text-white text-center">Login</h1>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div>
-              <label htmlFor="username" className={styles.label}>Username</label>
-              <input type="text" id="username" name="username" required className={styles.input} />
+              <label htmlFor="username" className="font-bold text-sm text-white">Username</label>
+              <input type="text" id="username" name="username" required className="w-full p-2 border border-gray-300 rounded-md text-base text-black" />
             </div>
             <div>
-              <label htmlFor="password" className={styles.label}>Password</label>
-              <input type="password" id="password" name="password" required className={styles.input} />
+              <label htmlFor="password" className="font-bold text-sm text-white">Password</label>
+              <input type="password" id="password" name="password" required className="w-full p-2 border border-gray-300 rounded-md text-base text-black" />
             </div>
-            <button type="submit" className={styles.button}>Login</button>
+
+            <div className="flex items-center gap-2">
+              <input 
+                type="checkbox" 
+                id="rememberMe" 
+                checked={rememberMe} 
+                onChange={() => setRememberMe(!rememberMe)} 
+                className="rounded-md" 
+              />
+              <label htmlFor="rememberMe" className="text-white text-sm">Remember Me</label>
+            </div>
+
+            <button type="submit" className="w-full p-2 bg-[#333] text-white border-none rounded-full cursor-pointer text-sm">Login</button>
           </form>
-          <div className={styles.divider}>or Login using</div>
-          <div className={styles.socialIcons}>
-            <button className={styles.socialIcon} title="Login with Gmail">
-              <img src="/gmail.png" alt="Gmail" style={{ height: '40px' }} />
-            </button>
-            <button className={styles.socialIcon} title="Login with Facebook">
-              <img src="/facebook.png" alt="Facebook" style={{ height: '43px' }} />
-            </button>
-          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Login;
