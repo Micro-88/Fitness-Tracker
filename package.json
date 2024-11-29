@@ -51,5 +51,13 @@
   "main": "testEnv.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Micro-88/Fitness-Tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Micro-88/Fitness-Tracker/issues"
+  },
+  "homepage": "https://github.com/Micro-88/Fitness-Tracker#readme"
 }
