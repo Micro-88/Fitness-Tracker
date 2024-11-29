@@ -3,18 +3,18 @@ import jwt from 'jsonwebtoken';
 
 const secretKey = 'your_secret_key';
 
-export async function verifyToken(req: NextRequest) {
-  const token = req.headers.get('authorization');
+export async function middleware(req: NextRequest) {
+  const token = req.headers.get('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return NextResponse.json({ error: 'Access denied. No token provided.' }, { status: 401 });
+    return NextResponse.redirect('/loginpage');
   }
 
   try {
-    const decoded = jwt.verify(token, secretKey);
-    (req as any).user = decoded; // Attach the user payload to the request
-    return NextResponse.next(); // Proceed to the next middleware/route handler
+    jwt.verify(token, secretKey);
+    return NextResponse.next();
   } catch (error) {
-    return NextResponse.json({ error: 'Invalid token.' }, { status: 403 });
+    console.error('Invalid token:', error);
+    return NextResponse.redirect('/loginpage');
   }
 }

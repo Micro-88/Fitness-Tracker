@@ -1,13 +1,44 @@
-"use client"; // Add this directive to make the component a Client Component
+"use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Doughnut, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const [workoutGenerated, setWorkoutGenerated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+    if (!token) {
+      router.push('/loginpage');
+      return;
+    }
+
+    // Token verification is now handled by middleware/authMiddleware.ts
+  }, [router]);
+
+  if (!isClient) {
+    return null;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    router.push('/loginpage');
+  };
+
 
   // Sample data for the doughnut chart
   const doughnutData = {
