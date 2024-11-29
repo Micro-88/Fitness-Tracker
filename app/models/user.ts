@@ -5,6 +5,8 @@ class User extends Model {
   declare id: number;
   declare username: string;
   declare password: string;
+  declare age: number;
+  declare gender: string;
 }
 
 User.init(
@@ -21,7 +23,15 @@ User.init(
         password: {
             type: DataTypes.STRING(100),
             allowNull: false
-        }
+        },
+        age: { 
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: true
+        },
+        gender: {
+            type: DataTypes.STRING(10),
+            allowNull: true
+        },
     },
     {
         sequelize,
