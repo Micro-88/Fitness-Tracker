@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 
 const WorkoutPlanner: React.FC = () => {
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
   const [goal, setGoal] = useState("");
   const [level, setLevel] = useState("");
   const [equipment, setEquipment] = useState<string[]>([]);
@@ -21,7 +19,7 @@ const WorkoutPlanner: React.FC = () => {
     "Bands",
   ];
 
-  const totalSteps = 6;
+  const totalSteps = 4; // Reduced total steps
   const progressPercentage = (step / totalSteps) * 100;
 
   const handleEquipmentChange = (item: string) => {
@@ -44,46 +42,38 @@ const WorkoutPlanner: React.FC = () => {
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return gender !== "";
-      case 2:
-        return age !== "" && parseInt(age) > 0;
-      case 3:
         return goal !== "";
-      case 4:
+      case 2:
         return level !== "";
-      case 5:
+      case 3:
         return equipment.length > 0;
       default:
         return true;
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
     const userInput = {
-      gender,
-      age,
       goal,
       level,
       equipment,
     };
-
+  
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/workout-plans", { // Adjust endpoint as needed
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          body: `Create a workout plan for the following: Gender: ${gender}, Age: ${age}, Goal: ${goal}, Level: ${level}, Equipment: ${equipment.join(", ")}.`,
-        }),
+        body: JSON.stringify(userInput), // Send user input
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to generate workout plan.");
       }
-
+  
       const data = await response.json();
-      setWorkoutPlan(data.output);
+      setWorkoutPlan(data.output); // Display response from the server if needed
     } catch (error) {
       console.error("Error generating workout plan:", error);
       setWorkoutPlan("Failed to generate a workout plan. Please try again.");
@@ -106,34 +96,6 @@ const WorkoutPlanner: React.FC = () => {
         {/* Steps */}
         {step === 1 && (
           <div>
-            <label className="block mb-2">Select Your Gender:</label>
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
-            >
-              <option value="">Choose Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div>
-            <label className="block mb-2">Enter Your Age:</label>
-            <input
-              type="number"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
-              min="1"
-            />
-          </div>
-        )}
-
-        {step === 3 && (
-          <div>
             <label className="block mb-2">Select Your Goal:</label>
             <select
               value={goal}
@@ -148,7 +110,7 @@ const WorkoutPlanner: React.FC = () => {
           </div>
         )}
 
-        {step === 4 && (
+        {step === 2 && (
           <div>
             <label className="block mb-2">Select Your Level:</label>
             <select
@@ -165,7 +127,7 @@ const WorkoutPlanner: React.FC = () => {
           </div>
         )}
 
-        {step === 5 && (
+        {step === 3 && (
           <div>
             <label className="block mb-2">Select Your Available Equipment:</label>
             <div>

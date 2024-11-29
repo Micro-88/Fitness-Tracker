@@ -4,9 +4,9 @@ import sequelize from '../../db_connection';
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, type, duration, intensity, caloriesBurned } = await req.json();
+    const { userId, workoutID, name, description} = await req.json();
     await sequelize.authenticate();
-    const newWorkout = await Workout.create({ userId, type, duration, intensity, caloriesBurned });
+    const newWorkout = await Workout.create({ userId, workoutID, name, description});
     return NextResponse.json(newWorkout, { status: 201 });
   } catch (error) {
     console.error('Error logging workout:', error);
