@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const SignUp: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -8,6 +9,7 @@ const SignUp: React.FC = () => {
   const ageRef = useRef<HTMLInputElement>(null);
   const [gender, setGender] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +35,7 @@ const SignUp: React.FC = () => {
 
       if (response.ok) {
         console.log('User created successfully');
+        router.push('/loginpage'); // Redirect to login page upon successful sign-up
       } else {
         const errorData = await response.json();
         console.error('Failed to create user:', errorData);
