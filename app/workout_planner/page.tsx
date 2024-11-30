@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 const WorkoutPlanner: React.FC = () => {
   const [goal, setGoal] = useState("");
@@ -8,6 +9,7 @@ const WorkoutPlanner: React.FC = () => {
   const [equipment, setEquipment] = useState<string[]>([]);
   const [step, setStep] = useState(1);
   const [workoutPlan, setWorkoutPlan] = useState<string | null>(null); // To display the response
+  const router = useRouter();
 
   const equipmentOptions = [
     "Barbells",
@@ -74,6 +76,10 @@ const WorkoutPlanner: React.FC = () => {
   
       const data = await response.json();
       setWorkoutPlan(data.output); // Display response from the server if needed
+
+      // Redirect to the dashboard after successful plan generation
+      router.push('/dashboard');
+      
     } catch (error) {
       console.error("Error generating workout plan:", error);
       setWorkoutPlan("Failed to generate a workout plan. Please try again.");
@@ -161,14 +167,12 @@ const WorkoutPlanner: React.FC = () => {
           </button>
           {step === totalSteps ? (
             <button
-              onClick={handleSubmit}
-              disabled={!isStepValid()}
-              className={`bg-green-500 text-white p-3 rounded ${
-                !isStepValid() && "opacity-50 cursor-not-allowed"
-              }`}
-            >
-              Generate Plan
-            </button>
+            onClick={handleSubmit}
+            disabled={!isStepValid()}
+            className={`bg-green-500 text-white p-3 rounded ${!isStepValid() && "opacity-50 cursor-not-allowed"}`}
+          >
+            Generate Plan
+          </button>
           ) : (
             <button
               onClick={nextStep}
