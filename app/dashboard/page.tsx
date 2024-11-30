@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Doughnut, Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 
 
@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     setIsClient(true);
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-
+    
     if (!token) {
       router.push('/loginpage');
       return;
