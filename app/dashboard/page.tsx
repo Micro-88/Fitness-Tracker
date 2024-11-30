@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-
+import { GetUserProfileInToken } from './../helpers/profile.helper';
+// import { GetAllWorkouts, GetWorkoutsByGoal, GetWorkoutsByLevel, GetWorkoutsForUser } from '../helpers/workout.helper';
 
 Chart.register(...registerables);
 
@@ -13,16 +14,24 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+  const userProfile = GetUserProfileInToken();
 
   useEffect(() => {
     setIsClient(true);
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    
+
     if (!token) {
       router.push('/loginpage');
       return;
     }
 
+    console.log('!!!!!!!TEST START HERE!!!!!!!!!');
+    console.log(GetUserProfileInToken);
+    // console.log(GetAllWorkouts);
+    // console.log(GetWorkoutsByGoal);
+    // console.log(GetWorkoutsByLevel);
+    // console.log(GetWorkoutsForUser);
+    console.log('!!!!!!!TEST END HERE!!!!!!!!!');
     // Token verification is now handled by middleware/authMiddleware.ts
   }, [router]);
 

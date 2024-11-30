@@ -15,7 +15,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, username: user.username, gender: user.gender, age: user.age  }, secretKey, { expiresIn: '1h' });
+
+    console.log(jwt.decode(token));
     return NextResponse.json({ token }, { status: 200 });
   } catch (error) {
     console.error('Error logging in:', error);

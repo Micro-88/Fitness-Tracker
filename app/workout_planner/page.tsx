@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { GetUserProfileInToken } from "../helpers/profile.helper";
+
 
 const WorkoutPlanner: React.FC = () => {
   const [goal, setGoal] = useState("");
   const [level, setLevel] = useState("");
   const [equipment, setEquipment] = useState<string[]>([]);
+  const [userId, setUserId] = useState("");
   const [step, setStep] = useState(1);
   const [workoutPlan, setWorkoutPlan] = useState<string | null>(null); // To display the response
   const router = useRouter();
@@ -20,6 +23,12 @@ const WorkoutPlanner: React.FC = () => {
     "Cables",
     "Bands",
   ];
+
+  
+  useEffect(() => {
+    const userProfile = GetUserProfileInToken();
+    setUserId(userProfile.id);
+  });
 
   const totalSteps = 4; // Reduced total steps
   const progressPercentage = (step / totalSteps) * 100;
@@ -54,11 +63,14 @@ const WorkoutPlanner: React.FC = () => {
     }
   };
 
+
+  
   const handleSubmit = async (e: React.FormEvent) => {
     const userInput = {
       goal,
       level,
       equipment,
+      userId,
     };
   
     try {

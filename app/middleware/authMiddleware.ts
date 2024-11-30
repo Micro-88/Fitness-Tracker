@@ -12,6 +12,8 @@ export async function middleware(req: NextRequest) {
 
   try {
     jwt.verify(token, secretKey);
+    const decoded = jwt.verify(token, 'secret_key')
+    console.log(decoded)
     return NextResponse.next();
   } catch (error) {
     console.error('Invalid token:', error);
