@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from './../helpers/profile.helper';
-// import { GetAllWorkouts, GetWorkoutsByGoal, GetWorkoutsByLevel, GetWorkoutsForUser } from '../helpers/workout.helper';
+// import  GetAllWorkouts  from './../helpers/workout.helper'
 
 Chart.register(...registerables);
 
 const Dashboard: React.FC = () => {
-  const [workoutGenerated, setWorkoutGenerated] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
+  // const workouts = GetAllWorkouts();
 
   useEffect(() => {
     setIsClient(true);
@@ -26,11 +26,8 @@ const Dashboard: React.FC = () => {
     }
 
     console.log('!!!!!!!TEST START HERE!!!!!!!!!');
-    console.log(GetUserProfileInToken);
-    // console.log(GetAllWorkouts);
-    // console.log(GetWorkoutsByGoal);
-    // console.log(GetWorkoutsByLevel);
-    // console.log(GetWorkoutsForUser);
+    console.log(userProfile);
+    // console.log(workouts);
     console.log('!!!!!!!TEST END HERE!!!!!!!!!');
     // Token verification is now handled by middleware/authMiddleware.ts
   }, [router]);
@@ -72,10 +69,75 @@ const Dashboard: React.FC = () => {
   };
 
   const handleGenerateWorkout = () => {
-    // Set workout as generated
-    setWorkoutGenerated(true);
-    // Redirect to workout planner page
     router.push('/workout_planner');
+  };
+
+  // Sample Dynamic To-Do List
+  const TodoList = () => {
+    const workoutCount = 5; // Change this value to dictate the number of workouts
+    const workouts = Array.from({ length: workoutCount }, (_, index) => ({
+      id: index + 1,
+      name: `Workout ${index + 1}`,
+      equipment: index % 2 === 0 ? "Dumbbells" : "Kettlebell",
+      duration: `${30 + index * 15} minutes`,
+      description: `Description for Workout ${index + 1}`,
+      instructions: `Instructions for Workout ${index + 1}`,
+    }));
+
+    return (
+      <div className="bg-white shadow-md rounded-lg p-4 h-full">
+        {/* Header Section */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg text-black font-semibold">To-Do List</h2>
+          <div className="flex space-x-4">
+            <button
+              className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
+              onClick={() => console.log("Edit Workout")}
+            >
+              Edit Workout
+            </button>
+            <button
+              className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
+              onClick={handleGenerateWorkout}
+            >
+              Generate New Plan
+            </button>
+          </div>
+        </div>
+
+        {/* Divider Bar */}
+        <div className="border-t-2 border-gray-300 mb-4"></div>
+
+        {/* Workout Details List */}
+        <ul className="space-y-4">
+          {workouts.map((workout) => (
+            <li key={workout.id} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+              {/* Checkbox at the top right of the card */}
+              <input
+                type="checkbox"
+                id={`task${workout.id}`}
+                className="absolute top-2 right-2 w-4 h-4"
+              />
+              <div className="text-sm font-semibold text-gray-600">
+                Name: <span className="font-normal">{workout.name}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Equipment: <span className="font-normal">{workout.equipment}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Duration: <span className="font-normal">{workout.duration}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Description: <span className="font-normal">{workout.description}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Instructions: <span className="font-normal">{workout.instructions}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   };
 
   return (
@@ -88,76 +150,9 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Box with Workout Plan */}
+      {/* Right Box with To-Do List */}
       <div className="md:w-1/2 p-4">
-        <div className="bg-white shadow-md rounded-lg p-4 h-full">
-          {!workoutGenerated ? (
-            // Generate Workout UI
-            <div className="flex flex-col items-center justify-center">
-              <h2 className="text-lg font-semibold mb-4">Generate Workout</h2>
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                onClick={handleGenerateWorkout}
-              >
-                Generate Workout
-              </button>
-            </div>
-          ) : (
-            // To-Do List UI
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg text-black font-semibold">To-Do List</h2>
-                <div className="flex space-x-4">
-                  <button
-                    className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
-                    onClick={() => setWorkoutGenerated(false)}
-                  >
-                    Edit Workout
-                  </button>
-                  <button
-                    className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
-                    onClick={handleGenerateWorkout}
-                  >
-                    Generate New Plan
-                  </button>
-                </div>
-              </div>
-              {/* Divider bar */}
-              <div className="border-t-2 border-gray-300 mb-4"></div>
-              
-              {/* Workout Details List */}
-              <ul className="space-y-4">
-                <li className="bg-gray-100 p-4 rounded-lg shadow-md relative">
-                  {/* Checkbox at the top right of the card */}
-                  <input
-                    type="checkbox"
-                    id="task1"
-                    className="absolute top-2 right-2 w-4 h-4"
-                  />
-                  <div className="text-sm font-semibold text-gray-600">Name: <span className="font-normal">WorkoutName</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Equipment: <span className="font-normal">Dumbbells</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Duration: <span className="font-normal">45 minutes</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Description: <span className="font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Instructions: <span className="font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti.</span></div>
-                </li>
-                {/* Repeat the above structure for each workout */}
-                <li className="bg-gray-100 p-4 rounded-lg shadow-md relative">
-                  {/* Checkbox at the top right of the card */}
-                  <input
-                    type="checkbox"
-                    id="task2"
-                    className="absolute top-2 right-2 w-4 h-4"
-                  />
-                  <div className="text-sm font-semibold text-gray-600">Name: <span className="font-normal">WorkoutName 2</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Equipment: <span className="font-normal">Kettlebell</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Duration: <span className="font-normal">30 minutes</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Description: <span className="font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>
-                  <div className="text-sm font-semibold text-gray-600">Instructions: <span className="font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti.</span></div>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
+        <TodoList />
       </div>
     </div>
   );

@@ -1,27 +1,43 @@
-import jwt from 'jsonwebtoken';
-import type { NextApiRequest, NextApiResponse } from 'next';
+// import jwt from 'jsonwebtoken';
+// import type { NextApiRequest, NextApiResponse } from 'next';
 import  Workout  from '../models/workout'; // Import your Sequelize model
 
 // Define the Workout interface to match your Sequelize model
-export interface WorkoutModel {
-    id: number;
-    name: string;
-    description: string;
-    goal: 'Lose_Weight' | 'Gain_Strength' | 'Gain_Muscle';
-    level: 'Novice' | 'Beginner' | 'Intermediate' | 'Advanced';
-    equipment: 'Barbells' | 'Dumbbells' | 'BodyWeight' | 'Machine' | 'Kettlebells' | 'Cables' | 'Bands';
-    duration: number;
-    muscleGroup: string;
-    instructions: string;
-}
+// export interface WorkoutModel {
+//     id: number;
+//     name: string;
+//     description: string;
+//     goal: 'Lose_Weight' | 'Gain_Strength' | 'Gain_Muscle';
+//     level: 'Novice' | 'Beginner' | 'Intermediate' | 'Advanced';
+//     equipment: 'Barbells' | 'Dumbbells' | 'BodyWeight' | 'Machine' | 'Kettlebells' | 'Cables' | 'Bands';
+//     duration: number;
+//     muscleGroup: string;
+//     instructions: string;
+// }
 
 // Fetch all workouts from the database
-export default async function GetAllWorkouts(req: NextApiRequest, res: NextApiResponse): { // Return type is an array of WorkoutModel
+export default async function GetAllWorkouts(){ // Return type is an array of WorkoutModel
     try {
         const workouts = await Workout.findAll(); // Fetch all workouts
-
+        console.log(workouts);
         // Returning the workouts as plain objects (without Sequelize methods)
-        return workouts.map(workout => workout.get()) as WorkoutModel[];
+        // return workouts.map(workout => workout.get()) as WorkoutModel[];
+
+        // const ObtainedWorkouts: WorkoutModel[] = workouts.map((workout) => ({
+        //     id: workout.id,
+        //     name: workout.name,
+        //     description: workout.description,
+        //     goal: workout.goal as 'Lose_Weight' | 'Gain_Strength' | 'Gain_Muscle', // Explicitly cast to narrow the type
+        //     level: workout.level as 'Novice' | 'Beginner' | 'Intermediate' | 'Advanced',
+        //     equipment: workout.equipment as 'Barbells' | 'Dumbbells' | 'BodyWeight' | 'Machine' | 'Kettlebells' | 'Cables' | 'Bands',
+        //     duration: workout.duration,
+        //     muscleGroup: workout.muscleGroup,
+        //     instructions: workout.instructions,
+        //   }));
+
+        const ObtainedWorkouts = workouts.map(workout => workout.toJSON());
+
+        return ObtainedWorkouts;
         
     } catch (error) {
         console.error("Error fetching workouts:", error);

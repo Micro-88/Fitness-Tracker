@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import WorkoutPlan from '../../models/workoutPlan';
 import Workout from '../../models/workout';
 import sequelize from '../../db_connection';
+import { Op } from 'sequelize';  // Import Op for the 'in' operator
 
 // POST request to create a workout plan based on user input
 export async function POST(req: NextRequest) {
@@ -15,7 +16,9 @@ export async function POST(req: NextRequest) {
       where: {
         goal,        // Match the goal
         level,       // Match the level
-        equipment,   // Match the equipment
+        equipment: {
+          [Op.in]: equipment,  // Match any of the provided equipment
+        },
       },
     });
       

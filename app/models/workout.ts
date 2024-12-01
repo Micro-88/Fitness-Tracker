@@ -2,9 +2,9 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../db_connection'; // Your database instance
 
 enum Goal {                                  
-  Lose_Weight = 'Lose Weight', 
-  Gain_Strength = 'Gain Strength',
-  Gain_Muscle = 'Gain Muscle',
+  Lose_Weight = 'Lose_Weight', 
+  Gain_Strength = 'Gain_Strength',
+  Gain_Muscle = 'Gain_Muscle',
 }
 
 enum Level {                                  

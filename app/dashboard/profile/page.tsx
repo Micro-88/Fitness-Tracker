@@ -36,9 +36,9 @@ const UserProfile: React.FC = () => {
             <span className="font-bold text-lg">Gender:</span>
             <span className="text-lg text-gray-400">{userProfile?.gender}</span>
           </div>
-          <button className="w-full py-2 bg-[#333] text-white rounded-full text-sm lowercase mt-4 hover:bg-[#555] transform hover:scale-105 transition duration-300">
+          {/* <button className="w-full py-2 bg-[#333] text-white rounded-full text-sm lowercase mt-4 hover:bg-[#555] transform hover:scale-105 transition duration-300">
             Edit Profile
-          </button>
+          </button> */}
           {/* Delete Profile Button */}
           <button className="w-full py-2 bg-red-600 text-white rounded-full text-sm lowercase mt-4 hover:bg-red-700 transform hover:scale-105 transition duration-300">
             Delete Profile
