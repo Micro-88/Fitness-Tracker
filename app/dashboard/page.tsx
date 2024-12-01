@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from './../helpers/profile.helper';
-// import  GetAllWorkouts  from './../helpers/workout.helper'
 
 Chart.register(...registerables);
 
 const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [workouts, setWorkouts] = useState([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
   // const workouts = GetAllWorkouts();
@@ -27,7 +27,25 @@ const Dashboard: React.FC = () => {
 
     console.log('!!!!!!!TEST START HERE!!!!!!!!!');
     console.log(userProfile);
-    // console.log(workouts);
+
+    const fetchWorkOuts = async() => {
+        const formData = {
+          userId: userProfile.id
+        }
+        const res = await fetch('/api/dashboard', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)}
+        );
+        const data = await res.json();
+        setWorkouts(data.workouts);
+    }
+
+    fetchWorkOuts();
+
+
     console.log('!!!!!!!TEST END HERE!!!!!!!!!');
     // Token verification is now handled by middleware/authMiddleware.ts
   }, [router]);
@@ -74,16 +92,8 @@ const Dashboard: React.FC = () => {
 
   // Sample Dynamic To-Do List
   const TodoList = () => {
-    const workoutCount = 5; // Change this value to dictate the number of workouts
-    const workouts = Array.from({ length: workoutCount }, (_, index) => ({
-      id: index + 1,
-      name: `Workout ${index + 1}`,
-      equipment: index % 2 === 0 ? "Dumbbells" : "Kettlebell",
-      duration: `${30 + index * 15} minutes`,
-      description: `Description for Workout ${index + 1}`,
-      instructions: `Instructions for Workout ${index + 1}`,
-    }));
 
+    
     return (
       <div className="bg-white shadow-md rounded-lg p-4 h-full">
         {/* Header Section */}
@@ -109,13 +119,13 @@ const Dashboard: React.FC = () => {
         <div className="border-t-2 border-gray-300 mb-4"></div>
 
         {/* Workout Details List */}
-        <ul className="space-y-4">
+        <ul className="space-y-4 h-96 overflow-y-auto">
           {workouts.map((workout) => (
             <li key={workout.id} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
               {/* Checkbox at the top right of the card */}
               <input
                 type="checkbox"
-                id={`task${workout.id}`}
+                id={`task${workout?.id}`}
                 className="absolute top-2 right-2 w-4 h-4"
               />
               <div className="text-sm font-semibold text-gray-600">
