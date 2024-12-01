@@ -29,9 +29,8 @@ export async function POST(req: NextRequest) {
     // Map the workoutIds correctly (reference 'id' from Workout)
     const workoutIdArray = workoutIds.map(workout => workout.id);
 
-    // const userId = userId;  // Assuming a fixed userId (you may need to replace this with dynamic input)
-    const name = 'My Custom Workout Plan';  // Replace with actual name
-    const description = 'A description of the workout plan.';  // Replace with actual description
+    const name = `Plan for User ${userId}`;
+    const description = `A workout plan for User: ${userId}`;
 
     const workoutPlanData = workoutIdArray.map(workoutId => ({
       userId,

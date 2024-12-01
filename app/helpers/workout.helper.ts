@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import  Workout  from '../models/workout'; // Import your Sequelize model
 
 // Define the Workout interface to match your Sequelize model
@@ -15,18 +16,18 @@ export interface WorkoutModel {
 }
 
 // Fetch all workouts from the database
-// export async function GetAllWorkouts(): WorkoutModel { // Return type is an array of WorkoutModel
-//     try {
-//         const workouts = await Workout.findAll(); // Fetch all workouts
+export default async function GetAllWorkouts(req: NextApiRequest, res: NextApiResponse): { // Return type is an array of WorkoutModel
+    try {
+        const workouts = await Workout.findAll(); // Fetch all workouts
 
-//         // Returning the workouts as plain objects (without Sequelize methods)
-//         return workouts.map(workout => workout.get());
+        // Returning the workouts as plain objects (without Sequelize methods)
+        return workouts.map(workout => workout.get()) as WorkoutModel[];
         
-//     } catch (error) {
-//         console.error("Error fetching workouts:", error);
-//         return []; // Return an empty array in case of an error
-//     }
-// }
+    } catch (error) {
+        console.error("Error fetching workouts:", error);
+        return []; // Return an empty array in case of an error
+    }
+}
 
 // // Fetch workouts by user goal or any specific filter
 // export async function GetWorkoutsByGoal(goal: 'Lose_Weight' | 'Gain_Strength' | 'Gain_Muscle'): Promise<WorkoutModel[]> {
