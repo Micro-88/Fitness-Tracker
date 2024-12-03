@@ -14,7 +14,6 @@ const Dashboard: React.FC = () => {
   const [workouts, setWorkouts] = useState([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
-  // const workouts = GetAllWorkouts();
 
   useEffect(() => {
     setIsClient(true);
@@ -28,27 +27,27 @@ const Dashboard: React.FC = () => {
     console.log('!!!!!!!TEST START HERE!!!!!!!!!');
     console.log(userProfile);
 
-    const fetchWorkOuts = async() => {
-        const formData = {
-          userId: userProfile.id
-        }
-        const res = await fetch('/api/dashboard', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)}
-        );
-        const data = await res.json();
-        setWorkouts(data.workouts);
-    }
-
     fetchWorkOuts();
 
 
     console.log('!!!!!!!TEST END HERE!!!!!!!!!');
     // Token verification is now handled by middleware/authMiddleware.ts
   }, [router]);
+
+  const fetchWorkOuts = async() => {
+    const formData = {
+      userId: userProfile.id
+    }
+    const res = await fetch('/api/dashboard', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)}
+    );
+    const data = await res.json();
+    setWorkouts(data.workouts);
+}
 
   if (!isClient) {
     return null;
@@ -90,8 +89,10 @@ const Dashboard: React.FC = () => {
     router.push('/workout_planner');
   };
 
-  // Sample Dynamic To-Do List
   const TodoList = () => {
+    const refreshTodoList = () => {
+      fetchWorkOuts(); // Call the existing function to refresh the list
+    };
 
     
     return (
@@ -111,6 +112,12 @@ const Dashboard: React.FC = () => {
               onClick={handleGenerateWorkout}
             >
               Generate New Plan
+            </button>
+            <button
+              className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+              onClick={refreshTodoList} // Trigger the refresh function
+            >
+              Refresh List
             </button>
           </div>
         </div>

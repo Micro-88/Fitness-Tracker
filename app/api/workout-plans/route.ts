@@ -10,6 +10,18 @@ export async function POST(req: NextRequest) {
     const { goal, level, equipment, userId } = await req.json(); // Removed gender and age
     await sequelize.authenticate();
 
+    // Check if the user already has a workout plan
+    const existingPlans = await WorkoutPlan.findAll({
+      where: { userId },
+    });
+
+    // If a workout plan exists, delete the old plans
+    if (existingPlans.length > 0) {
+      await WorkoutPlan.destroy({
+        where: { userId },
+      });
+    }
+
     // Query the workouts table for workouts that match the user's criteria
     const workoutIds = await Workout.findAll({
       attributes: ['id'],  // Select the 'id' column from the Workout model
