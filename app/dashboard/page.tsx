@@ -11,7 +11,16 @@ Chart.register(...registerables);
 const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
-  const [workouts, setWorkouts] = useState([]);
+  interface Workout {
+    id: string;
+    name: string;
+    equipment: string;
+    duration: string;
+    description: string;
+    instructions: string;
+  }
+
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
 
@@ -94,7 +103,6 @@ const Dashboard: React.FC = () => {
       fetchWorkOuts(); // Call the existing function to refresh the list
     };
 
-    
     return (
       <div className="bg-white shadow-md rounded-lg p-4 h-full">
         {/* Header Section */}
@@ -127,31 +135,35 @@ const Dashboard: React.FC = () => {
 
         {/* Workout Details List */}
         <ul className="space-y-4 h-96 overflow-y-auto">
-          {workouts.map((workout) => (
-            <li key={workout.id} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
-              {/* Checkbox at the top right of the card */}
-              <input
-                type="checkbox"
-                id={`task${workout?.id}`}
-                className="absolute top-2 right-2 w-4 h-4"
-              />
-              <div className="text-sm font-semibold text-gray-600">
-                Name: <span className="font-normal">{workout.name}</span>
-              </div>
-              <div className="text-sm font-semibold text-gray-600">
-                Equipment: <span className="font-normal">{workout.equipment}</span>
-              </div>
-              <div className="text-sm font-semibold text-gray-600">
-                Duration: <span className="font-normal">{workout.duration}</span>
-              </div>
-              <div className="text-sm font-semibold text-gray-600">
-                Description: <span className="font-normal">{workout.description}</span>
-              </div>
-              <div className="text-sm font-semibold text-gray-600">
-                Instructions: <span className="font-normal">{workout.instructions}</span>
-              </div>
-            </li>
-          ))}
+          {workouts && workouts.length > 0 ? (
+            workouts.map((workout) => (
+              <li key={workout.id} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+                {/* Checkbox at the top right of the card */}
+                <input
+                  type="checkbox"
+                  id={`task${workout?.id}`}
+                  className="absolute top-2 right-2 w-4 h-4"
+                />
+                <div className="text-sm font-semibold text-gray-600">
+                  Name: <span className="font-normal">{workout.name}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">
+                  Equipment: <span className="font-normal">{workout.equipment}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">
+                  Duration: <span className="font-normal">{workout.duration}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">
+                  Description: <span className="font-normal">{workout.description}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">
+                  Instructions: <span className="font-normal">{workout.instructions}</span>
+                </div>
+              </li>
+            ))
+          ) : (
+            <p>No workouts available.</p>
+          )}
         </ul>
       </div>
     );

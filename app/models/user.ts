@@ -11,6 +11,7 @@ class User extends Model {
   declare password: string;
   declare gender: Gender;                       //added gender and age
   declare age: number;
+  declare isDeleted: boolean;              //added isDeleted for user soft delete
 }
 
 User.init(
@@ -31,12 +32,16 @@ User.init(
         gender: {                                                       //added gender and age
             type: DataTypes.ENUM('male', 'female'),
             allowNull: false,
-          },
-          age: {
+        },
+        age: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
-          },
-    },
+        },
+        isDeleted: {                              //added isDeleted for user soft delete
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
+    },  
     {
         sequelize,
         tableName: 'users',
