@@ -30,11 +30,6 @@ module.exports = {
           type: Sequelize.INTEGER.UNSIGNED,
           allowNull: false,
         },
-        isDeleted: { //add this column for soft delete
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: false
-        },
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
