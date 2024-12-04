@@ -6,22 +6,12 @@ const { AllowNull } = require('sequelize-typescript');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-      await queryInterface.createTable('dailyWorkout', {
+      await queryInterface.createTable('generatedWorkouts', {
         id: {
           type: Sequelize.INTEGER.UNSIGNED,
           autoIncrement: true,
           primaryKey: true,
           allowNull: false,
-        },
-        planId: {
-          type: Sequelize.INTEGER.UNSIGNED,
-          allowNull: false,
-          references: {
-            model: 'workoutPlans',
-            key: 'id',
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE', // Deletes the workout plan if the user is deleted
         },
         workoutId: {
           type: Sequelize.INTEGER.UNSIGNED,
@@ -33,10 +23,26 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
-        name: {
+        userId: {
+            type: Sequelize.INTEGER.UNSIGNED,
+            allowNull: false,
+            references: {
+              model: 'users',
+              key: 'id',
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE', // Deletes the workout plan if the user is deleted
+          },
+        duration: {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        intensity: {
+            type: Sequelize.STRING,
+          },
+        instructions: {
+            type: Sequelize.TEXT,
+          },
         description: {
           type: Sequelize.TEXT,
           allowNull: true,
@@ -55,6 +61,6 @@ module.exports = {
     },
   
     async down(queryInterface, Sequelize) {
-      await queryInterface.dropTable('dailyWorkout');
+      await queryInterface.dropTable('generatedWorkouts');
     },
   };

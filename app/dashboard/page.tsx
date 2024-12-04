@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from './../helpers/profile.helper';
+// import { GetUserWorkouts } from '../helpers/workout.helper';
 
 Chart.register(...registerables);
 
@@ -14,6 +15,7 @@ const Dashboard: React.FC = () => {
   const [workouts, setWorkouts] = useState([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
+  // const workout2 = GetUserWorkouts(userProfile.id);
 
   useEffect(() => {
     setIsClient(true);
@@ -132,7 +134,7 @@ const Dashboard: React.FC = () => {
               {/* Checkbox at the top right of the card */}
               <input
                 type="checkbox"
-                id={`task${workout?.id}`}
+                id={`task${workout.id}`}
                 className="absolute top-2 right-2 w-4 h-4"
               />
               <div className="text-sm font-semibold text-gray-600">

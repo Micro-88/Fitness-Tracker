@@ -51,10 +51,16 @@ export async function POST(req: NextRequest) {
     // Format the filtered data into a prompt
     const prompt = `User ID ${userId} has the following workouts assigned:\n${specificWorkoutData
       .map(
-        workout =>
-          `- ${workout.id} (${workout.name}): ${workout.muscleGroup}`
+        workout => `- Workout ID: ${workout.id}, Name: ${workout.name}`
       )
-      .join("\n")}\nPlease provide a workout plan to balance the user's workouts using only the use's available workouts`;
+      .join("\n")}\n\nPlease provide a balanced workout plan using all the user's available workouts.\nReply in JSON with the following structure:\n\n{
+        "workoutId": "workout.id",\n
+        "userId": "userId",\n
+        "duration": "duration",\n
+        "intensity": "intensity",\n
+        "instructions": "instructions",\n
+        "description": "description"
+      }`;
 
     console.log("Sending prompt to Gemini API:", prompt);
 
