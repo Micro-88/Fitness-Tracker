@@ -54,8 +54,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    user.isDeleted = true; // Soft delete the user
-    await user.save();
+    await user.destroy(); // Permanently delete the user
 
     return NextResponse.json({ message: 'Profile deleted successfully' }, { status: 200 });
   } catch (error) {

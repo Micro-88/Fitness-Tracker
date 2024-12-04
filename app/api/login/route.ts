@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     await sequelize.authenticate();
     const user = await User.findOne({ where: { username } });
 
-    if (!user || user.isDeleted) {
+    if (!user) {
       return NextResponse.json({ error: 'This account does not exist' }, { status: 404 });
     }
 
