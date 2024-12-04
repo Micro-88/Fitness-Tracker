@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SignUp: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -83,6 +84,9 @@ const SignUp: React.FC = () => {
             </div>
             <button type="submit" className="w-full p-2 bg-[#333] text-white border-none rounded-full cursor-pointer text-sm">Sign Up</button>
           </form>
+          <p className="text-white mt-4 text-center">
+          Already have an account? <Link href="/loginpage" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Log in</Link>
+          </p>
           {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>
       </div>

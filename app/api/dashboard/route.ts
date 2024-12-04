@@ -5,7 +5,7 @@ import sequelize from '../../db_connection';
 import Workout from '@/app/models/workout';
 import { Op } from 'sequelize';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-// import GeneratedWorkout from '@/app/models/generateWorkout';
+import GeneratedWorkout from '@/app/models/generateWorkout';
 
 
 export async function POST(req: NextRequest) {
@@ -55,7 +55,8 @@ export async function POST(req: NextRequest) {
       .map(
         workout => `- Workout ID: ${workout.id}, Name: ${workout.name}`
       )
-      .join("\n")}\n\nPlease provide a balanced workout plan using all the user's available workouts.\nReply in JSON with the following structure:\n\n{
+      .join("\n")}\n\nPlease provide a balanced workout plan using all the user's available workouts.\nReply only with the following structure:\n\n
+      [\n{
         "workoutId": "workout.id",\n
         "userId": "userId",\n
         "duration": "duration",\n
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
         "instructions": "instructions",\n
         "description": "description", \n
         "caloriesBurned": "caloriesBurned"
-      }`;
+      }\n]`;
 
     console.log("Sending prompt to Gemini API:", prompt);
 
@@ -76,22 +77,26 @@ export async function POST(req: NextRequest) {
     console.log("Generated response from Gemini API:", geminiOutput);
 
     // // Parse the Gemini response (assumed to be in JSON format)
-    // const workoutPlanData = JSON.parse(geminiOutput);
+    const workoutPlanData = JSON.parse(geminiOutput);
+    
+    console.log('!!!!!!!!!!!!!!TEST START HERE!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(workoutPlanData);
+    console.log('!!!!!!!!!!!!!!TEST END HERE!!!!!!!!!!!!!!!!!!!!!!!');
 
     // // Loop through the generated workout data and insert into the GeneratedWorkout table
-    // for (const plan of workoutPlanData) {
-    //   const { workoutId, userId, duration, intensity, instructions, description } = plan;
+    for (const plan of workoutPlanData) {
+      const { workoutId, userId, duration, intensity, instructions, description } = plan;
 
-    //   // Insert into the GeneratedWorkout table
-    //   await GeneratedWorkout.create({
-    //     workoutId,
-    //     userId,
-    //     duration,
-    //     intensity,
-    //     instructions,
-    //     description,
-    //   });
-    // }
+      // Insert into the GeneratedWorkout table
+      await GeneratedWorkout.create({
+        workoutId,
+        userId,
+        duration,
+        intensity,
+        instructions,
+        description,
+      });
+    }
 
     return NextResponse.json({ userId, workouts }, { status: 200 });
     } catch (error) {

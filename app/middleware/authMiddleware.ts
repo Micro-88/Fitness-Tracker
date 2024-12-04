@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-
+ // updated authMiddleware to handle new token validation for profile editing
 const secretKey = 'your_secret_key';
 
 export async function middleware(req: NextRequest) {
@@ -11,9 +11,8 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    jwt.verify(token, secretKey);
-    const decoded = jwt.verify(token, 'secret_key')
-    console.log(decoded)
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded);
     return NextResponse.next();
   } catch (error) {
     console.error('Invalid token:', error);

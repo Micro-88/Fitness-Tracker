@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import WorkoutPlan from '../../models/workoutPlan';
+import workoutPlan from '../../models/workoutPlan';
 import Workout from '../../models/workout';
 import sequelize from '../../db_connection';
 import { Op } from 'sequelize';  // Import Op for the 'in' operator
@@ -11,13 +11,13 @@ export async function POST(req: NextRequest) {
     await sequelize.authenticate();
 
     // Check if the user already has a workout plan
-    const existingPlans = await WorkoutPlan.findAll({
+    const existingPlans = await workoutPlan.findAll({
       where: { userId },
     });
 
     // If a workout plan exists, delete the old plans
     if (existingPlans.length > 0) {
-      await WorkoutPlan.destroy({
+      await workoutPlan.destroy({
         where: { userId },
       });
     }
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     }));
 
     // Create workout plans in bulk
-    await WorkoutPlan.bulkCreate(workoutPlanData);
+    await workoutPlan.bulkCreate(workoutPlanData);
 
     return NextResponse.json({ message: 'Workout plan created successfully' });
 
