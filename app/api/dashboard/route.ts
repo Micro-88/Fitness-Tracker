@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     try {
 
-      // Ensure the Gemini API Key is loaded
+      // To ensure the Gemini API Key is loaded
       if (!process.env.GEMINI_API_KEY) {
         console.error("Gemini API Key is missing");
         return NextResponse.json(
@@ -37,16 +37,24 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    // Filter specific workout information
+    const specificWorkoutData = workouts.map(workout => ({
+      id: workout.id,
+      name: workout.name,
+      muscleGroup: workout.muscleGroup,
+    }));
+
     // Integrate Gemini Chatbot
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-    // Format workout details into a prompt for Gemini
-    const prompt = `The following workouts are assigned to user ID ${userId}:\n${JSON.stringify(
-      workouts,
-      null,
-      2
-    )}\nPlease provide insights or suggestions for this workout plan.`;
+    // Format the filtered data into a prompt
+    const prompt = `User ID ${userId} has the following workouts assigned:\n${specificWorkoutData
+      .map(
+        workout =>
+          `- ${workout.id} (${workout.name}): ${workout.muscleGroup}`
+      )
+      .join("\n")}\nPlease provide a workout plan to balance the user's workouts using only the use's available workouts`;
 
     console.log("Sending prompt to Gemini API:", prompt);
 
