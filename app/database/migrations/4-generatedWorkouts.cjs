@@ -53,6 +53,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      isCompleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false, // The field is required
+        defaultValue: false, // Default value is false
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

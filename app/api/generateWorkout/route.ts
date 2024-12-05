@@ -65,9 +65,10 @@ export async function POST(req: NextRequest) {
       "instructions": "instructions",\n
       "description": "description", \n
       "caloriesBurned": "caloriesBurned"
+      "isCompleted": false\n
       }\n]`;
 
-    // console.log("Sending prompt to Gemini API:", prompt);
+    console.log("Sending prompt to Gemini API:", prompt);
 
     // Send request to Gemini API
     const result = await model.generateContent(prompt);
@@ -75,12 +76,12 @@ export async function POST(req: NextRequest) {
 
     // Extract the generated content
     const geminiOutput = await response.text();
-    // console.log("Generated response from Gemini API:", geminiOutput);
+    console.log("Generated response from Gemini API:", geminiOutput);
 
     // Parse the Gemini response (assumed to be in JSON format)
     const workoutPlanData = JSON.parse(geminiOutput);
 
-    // console.log('Generated workout plan data:', workoutPlanData);
+    console.log('Generated workout plan data:', workoutPlanData);
 
     // Check if the user already has workout plans
     const existingWorkouts = await GeneratedWorkout.findAll({ where: { userId } });

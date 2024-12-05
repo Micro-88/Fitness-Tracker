@@ -12,6 +12,7 @@ class GeneratedWorkout extends Model {
   declare instructions: string;
   declare description: string;
   declare caloriesBurned: number;
+  declare isCompleted: boolean; // Add the isCompleted field
 }
 
 GeneratedWorkout.init(
@@ -51,6 +52,11 @@ GeneratedWorkout.init(
     caloriesBurned: {
       type: DataTypes.INTEGER,
       allowNull: true,
+    },
+    isCompleted: {
+      type: DataTypes.BOOLEAN, // Add the new field here
+      allowNull: false, // Mark as required
+      defaultValue: false, // Default value is false
     },
   },
   {

@@ -74,12 +74,12 @@ const WorkoutPlanner: React.FC = () => {
     };
   
     try {
-      const response = await fetch("/api/workout-plans", { // Adjust endpoint as needed
+      const response = await fetch("/api/workout-plans", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userInput), // Send user input
+        body: JSON.stringify(userInput),
       });
   
       if (!response.ok) {
@@ -88,6 +88,17 @@ const WorkoutPlanner: React.FC = () => {
   
       const data = await response.json();
       setWorkoutPlan(data.output); // Display response from the server if needed
+
+      const UID = GetUserProfileInToken();
+      const formData = { userId: UID.id };
+
+      const GenerateWorkout = await fetch("/api/generateWorkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       // Redirect to the dashboard after successful plan generation
       router.push('/dashboard');
