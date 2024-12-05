@@ -12,10 +12,17 @@ export async function POST(req: NextRequest) {
 
       await sequelize.authenticate();
 
-      // Check if the user has a workout plan
+      // Step 1: Fetch all generated workouts for the user
       const generatedWorkouts = await GeneratedWorkout.findAll({
         where: { userId },
-        attributes: ['workoutId'], // Only fetch the workoutId column
+        attributes: [
+          'workoutId', 
+          'duration', 
+          'intensity', 
+          'instructions', 
+          'description', 
+          'caloriesBurned',
+        ], // Fetch specific columns from the generatedWorkouts table
     });
 
     const workoutIds = generatedWorkouts.map(workout => workout.workoutId);
@@ -23,21 +30,46 @@ export async function POST(req: NextRequest) {
     if (workoutIds.length === 0) {
       return NextResponse.json({ error: 'No workouts found for the user in generated workouts' }, { status: 404 });
   }
-
+    // Step 2: Fetch the workouts that match the workoutIds
     const workouts = await Workout.findAll({
       where: { 
         id: { [Op.in]: workoutIds }
-      }
+      },
+      attributes: ['id', 'name', 'equipment'],
     })
 
-    // Pass the fetched workouts to the generateWorkout API
-    // const response = await fetch(`../generatedWorkout`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ userId, workouts }),
-    // });
+    // Step 3: Merge the data from GeneratedWorkout and Workout to create DisplayWorkouts
+    const displayWorkouts = generatedWorkouts.map((generatedWorkout) => {
+      const workout = workouts.find(w => w.id === generatedWorkout.workoutId);
 
-    return NextResponse.json({ userId, workouts }, { status: 200 });
+      if (workout) {
+        
+        return {
+          workoutId: workout.id,
+          workoutName: workout.name,
+          equipment: workout.equipment,
+          duration: generatedWorkout.duration,
+          intensity: generatedWorkout.intensity,
+          instructions: generatedWorkout.instructions,
+          description: generatedWorkout.description, 
+          caloriesBurned: generatedWorkout.caloriesBurned,
+        };
+      }
+      return null; // If no matching workout is found
+    }).filter(Boolean); // Filter out null values
+
+    // Step 4: Return the DisplayWorkouts to the front-end
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(displayWorkouts);
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
+    return NextResponse.json({ userId, displayWorkouts }, { status: 200 });
     } catch (error) {
       console.error('Error fetching workout plans:', error);
       return NextResponse.json({ error: 'Failed to fetch workout plans' }, { status: 500 });

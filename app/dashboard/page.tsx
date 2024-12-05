@@ -5,26 +5,28 @@ import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from './../helpers/profile.helper';
-// import { GetUserWorkouts } from '../helpers/workout.helper';
+import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
 
 Chart.register(...registerables);
 
 const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State for loading
   interface Workout {
-    id: string;
-    name: string;
+    workoutId: string;
+    workoutName: string;
     equipment: string;
     duration: string;
-    description: string;
+    intensity: string;
     instructions: string;
+    description: string;
+    caloriesBurned: string;
   }
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
-  // const workout2 = GetUserWorkouts(userProfile.id);
 
   useEffect(() => {
     setIsClient(true);
@@ -35,13 +37,13 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    console.log('!!!!!!!TEST START HERE!!!!!!!!!');
+    // console.log('!!!!!!!TEST START HERE!!!!!!!!!');
     console.log(userProfile);
 
     fetchWorkOuts();
 
 
-    console.log('!!!!!!!TEST END HERE!!!!!!!!!');
+    // console.log('!!!!!!!TEST END HERE!!!!!!!!!');
     // Token verification is now handled by middleware/authMiddleware.ts
   }, [router]);
 
@@ -58,6 +60,16 @@ const Dashboard: React.FC = () => {
     );
     const data = await res.json();
     setWorkouts(data.workouts);
+
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('Workouts:', workouts);
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 }
 
   if (!isClient) {
@@ -102,6 +114,7 @@ const Dashboard: React.FC = () => {
 
   const TodoList = () => {
     const refreshTodoList = async () => {
+      setIsLoading(true);
       // Make a request to the /api/generateWorkout endpoint to refresh the workout data
       try {
         const formData = { userId: userProfile.id };
@@ -117,16 +130,15 @@ const Dashboard: React.FC = () => {
         if (!response.ok) {
           throw new Error('Failed to generate workout');
         }
-  
-        // Get the data from the response
-        const data = await response.json();
-  
-        // Update the workouts list with the new data
-        setWorkouts(data.workouts);
+
+        fetchWorkOuts();
+
 
       } catch (error) {
         console.error('Error refreshing workouts:', error);
         setError('Failed to refresh workouts');
+      } finally {
+        setIsLoading(false); // Stop loading after the process is complete
       }
     };
 
@@ -152,7 +164,11 @@ const Dashboard: React.FC = () => {
               className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
               onClick={refreshTodoList} // Trigger the refresh function
             >
-              Refresh List
+              {isLoading ? (
+              <FaSpinner className="animate-spin w-6 h-6 text-white" />
+            ) : (
+              "Refresh List"
+            )}
             </button>
           </div>
         </div>
@@ -164,15 +180,15 @@ const Dashboard: React.FC = () => {
         <ul className="space-y-4 h-96 overflow-y-auto">
           {workouts && workouts.length > 0 ? (
             workouts.map((workout) => (
-              <li key={workout.id} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+              <li key={workout.workoutId} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
                 {/* Checkbox at the top right of the card */}
                 <input
                   type="checkbox"
-                  id={`task${workout?.id}`}
+                  id={`task${workout?.workoutId}`}
                   className="absolute top-2 right-2 w-4 h-4"
                 />
                 <div className="text-sm font-semibold text-gray-600">
-                  Name: <span className="font-normal">{workout.name}</span>
+                  Name: <span className="font-normal">{workout.workoutName}</span>
                 </div>
                 <div className="text-sm font-semibold text-gray-600">
                   Equipment: <span className="font-normal">{workout.equipment}</span>
@@ -181,15 +197,52 @@ const Dashboard: React.FC = () => {
                   Duration: <span className="font-normal">{workout.duration}</span>
                 </div>
                 <div className="text-sm font-semibold text-gray-600">
+                  Intensity: <span className="font-normal">{workout.intensity}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">
+                  Instruction: <span className="font-normal">{workout.instructions}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">
                   Description: <span className="font-normal">{workout.description}</span>
                 </div>
                 <div className="text-sm font-semibold text-gray-600">
-                  Instructions: <span className="font-normal">{workout.instructions}</span>
+                  Calories Burned: <span className="font-normal">{workout.caloriesBurned}</span>
                 </div>
               </li>
             ))
           ) : (
             <p>No workouts available.</p>
+            // workouts.map((workout) => (
+            //   <li key={workout.workoutId} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+            //     {/* Checkbox at the top right of the card */}
+            //     <input
+            //       type="checkbox"
+            //       id={`task${workout?.workoutId}`}
+            //       className="absolute top-2 right-2 w-4 h-4"
+            //     />
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Name: <span className="font-normal">{workout.workoutName}</span>
+            //     </div>
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Equipment: <span className="font-normal">{workout.equipment}</span>
+            //     </div>
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Duration: <span className="font-normal">{workout.duration}</span>
+            //     </div>
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Intensity: <span className="font-normal">{workout.intensity}</span>
+            //     </div>
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Instruction: <span className="font-normal">{workout.instructions}</span>
+            //     </div>
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Description: <span className="font-normal">{workout.description}</span>
+            //     </div>
+            //     <div className="text-sm font-semibold text-gray-600">
+            //       Calories Burned: <span className="font-normal">{workout.caloriesBurned}</span>
+            //     </div>
+            //   </li>
+            // ))
           )}
         </ul>
       </div>
