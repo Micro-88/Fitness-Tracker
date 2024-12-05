@@ -101,8 +101,33 @@ const Dashboard: React.FC = () => {
   };
 
   const TodoList = () => {
-    const refreshTodoList = () => {
-      fetchWorkOuts(); // Call the existing function to refresh the list
+    const refreshTodoList = async () => {
+      // Make a request to the /api/generateWorkout endpoint to refresh the workout data
+      try {
+        const formData = { userId: userProfile.id };
+  
+        const response = await fetch('/api/generateWorkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to generate workout');
+        }
+  
+        // Get the data from the response
+        const data = await response.json();
+  
+        // Update the workouts list with the new data
+        setWorkouts(data.workouts);
+
+      } catch (error) {
+        console.error('Error refreshing workouts:', error);
+        setError('Failed to refresh workouts');
+      }
     };
 
     return (

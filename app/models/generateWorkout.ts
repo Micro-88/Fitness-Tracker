@@ -50,7 +50,7 @@ GeneratedWorkout.init(
     },
     caloriesBurned: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

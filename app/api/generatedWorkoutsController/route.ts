@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest) {
     }
 
     // Update the fields of the generated workout
-    generatedWorkout.workoutId = workoutId || generatedWorkout.workoutId;
+    generatedWorkout.workoutId = workoutId;
     generatedWorkout.userId = userId || generatedWorkout.userId;
     generatedWorkout.duration = duration || generatedWorkout.duration;
     generatedWorkout.intensity = intensity || generatedWorkout.intensity;

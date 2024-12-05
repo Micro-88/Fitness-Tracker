@@ -1,37 +1,28 @@
 import { NextResponse, NextRequest } from 'next/server';
 import WorkoutPlan from '../../models/workoutPlan';
-import User from '../../models/user';
 import sequelize from '../../db_connection';
 import Workout from '@/app/models/workout';
 import { Op } from 'sequelize';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import GeneratedWorkout from '@/app/models/generateWorkout';
 
-
 export async function POST(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
     const { userId } = await req.json();
     
     try {
 
-      // To ensure the Gemini API Key is loaded
-      if (!process.env.GEMINI_API_KEY) {
-        console.error("Gemini API Key is missing");
-        return NextResponse.json(
-          { error: "Internal Server Error: API Key is missing" },
-          { status: 500 }
-        );
-      }
-
       await sequelize.authenticate();
 
       // Check if the user has a workout plan
-      const workoutPlans = await WorkoutPlan.findAll({
+      const generatedWorkouts = await GeneratedWorkout.findAll({
         where: { userId },
         attributes: ['workoutId'], // Only fetch the workoutId column
     });
 
-    const workoutIds = workoutPlans.map(plan => plan.workoutId);
+    const workoutIds = generatedWorkouts.map(workout => workout.workoutId);
+
+    if (workoutIds.length === 0) {
+      return NextResponse.json({ error: 'No workouts found for the user in generated workouts' }, { status: 404 });
+  }
 
     const workouts = await Workout.findAll({
       where: { 
@@ -39,64 +30,12 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    // Filter specific workout information
-    const specificWorkoutData = workouts.map(workout => ({
-      id: workout.id,
-      name: workout.name,
-      muscleGroup: workout.muscleGroup,
-    }));
-
-    // Integrate Gemini Chatbot
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
-    // Format the filtered data into a prompt
-    const prompt = `User ID ${userId} has the following workouts assigned:\n${specificWorkoutData
-      .map(
-        workout => `- Workout ID: ${workout.id}, Name: ${workout.name}`
-      )
-      .join("\n")}\n\nPlease provide a balanced workout plan using all the user's available workouts.\nReply only with the following structure:\n\n
-      [\n{
-        "workoutId": "workout.id",\n
-        "userId": "userId",\n
-        "duration": "duration",\n
-        "intensity": "intensity",\n
-        "instructions": "instructions",\n
-        "description": "description", \n
-        "caloriesBurned": "caloriesBurned"
-      }\n]`;
-
-    console.log("Sending prompt to Gemini API:", prompt);
-
-    // Send request to Gemini API
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-
-    // Extract the generated content
-    const geminiOutput = await response.text();
-    console.log("Generated response from Gemini API:", geminiOutput);
-
-    // // Parse the Gemini response (assumed to be in JSON format)
-    const workoutPlanData = JSON.parse(geminiOutput);
-    
-    console.log('!!!!!!!!!!!!!!TEST START HERE!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log(workoutPlanData);
-    console.log('!!!!!!!!!!!!!!TEST END HERE!!!!!!!!!!!!!!!!!!!!!!!');
-
-    // // Loop through the generated workout data and insert into the GeneratedWorkout table
-    for (const plan of workoutPlanData) {
-      const { workoutId, userId, duration, intensity, instructions, description } = plan;
-
-      // Insert into the GeneratedWorkout table
-      await GeneratedWorkout.create({
-        workoutId,
-        userId,
-        duration,
-        intensity,
-        instructions,
-        description,
-      });
-    }
+    // Pass the fetched workouts to the generateWorkout API
+    // const response = await fetch(`../generatedWorkout`, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ userId, workouts }),
+    // });
 
     return NextResponse.json({ userId, workouts }, { status: 200 });
     } catch (error) {
