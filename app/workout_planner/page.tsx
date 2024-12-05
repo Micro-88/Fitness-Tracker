@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { GetUserProfileInToken } from "../helpers/profile.helper";
-
+import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
 
 const WorkoutPlanner: React.FC = () => {
   const [goal, setGoal] = useState("");
@@ -12,6 +12,7 @@ const WorkoutPlanner: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [step, setStep] = useState(1);
   const [workoutPlan, setWorkoutPlan] = useState<string | null>(null); // To display the response
+  const [isLoading, setIsLoading] = useState(false); // State for loading
   const router = useRouter();
 
   const equipmentOptions = [
@@ -66,6 +67,8 @@ const WorkoutPlanner: React.FC = () => {
 
   
   const handleSubmit = async (e: React.FormEvent) => {
+    setIsLoading(true);
+
     const userInput = {
       goal,
       level,
@@ -106,6 +109,8 @@ const WorkoutPlanner: React.FC = () => {
     } catch (error) {
       console.error("Error generating workout plan:", error);
       setWorkoutPlan("Failed to generate a workout plan. Please try again.");
+    } finally {
+      setIsLoading(false); // Stop loading after the process is complete
     }
   };
 
@@ -191,10 +196,14 @@ const WorkoutPlanner: React.FC = () => {
           {step === totalSteps ? (
             <button
             onClick={handleSubmit}
-            disabled={!isStepValid()}
+            disabled={!isStepValid() || isLoading}
             className={`bg-green-500 text-white p-3 rounded ${!isStepValid() && "opacity-50 cursor-not-allowed"}`}
           >
-            Generate Plan
+            {isLoading ? (
+              <FaSpinner className="animate-spin w-6 h-6 text-white" />
+            ) : (
+              "Generate Plan"
+            )}
           </button>
           ) : (
             <button

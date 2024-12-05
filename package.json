@@ -33,6 +33,7 @@
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "react-icons": "^5.4.0",
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
