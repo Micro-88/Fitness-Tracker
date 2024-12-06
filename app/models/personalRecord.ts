@@ -3,42 +3,59 @@ import sequelize from '../db_connection';
 import User from './user';
 
 class PersonalRecord extends Model {
-  declare id: number;
   declare userId: number;
-  declare workoutType: string;
-  declare record: string;
+  declare totalCaloriesBurned: number;
+  declare totalWorkoutDuration: number;
+  declare totalWorkoutsFinished: number;
+  declare createdAt: Date;
+  declare updatedAt: Date;
 }
 
 PersonalRecord.init(
   {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: User,
         key: 'id',
       },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
-    workoutType: {
-      type: DataTypes.STRING(100),
+    totalCaloriesBurned: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
     },
-    record: {
-      type: DataTypes.STRING(100),
+    totalWorkoutDuration: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
+    },
+    totalWorkoutsFinished: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
+    modelName: 'PersonalRecord',
     tableName: 'personalRecords',
+    timestamps: true,
   }
 );
-
-PersonalRecord.belongsTo(User, { foreignKey: 'userId' });
 
 export default PersonalRecord;

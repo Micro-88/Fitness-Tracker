@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading
+  const [personalRecords, setPersonalRecords] = useState<any>(null); // State for personal records
   interface Workout {
     workoutId: string;
     workoutName: string;
@@ -22,6 +23,7 @@ const Dashboard: React.FC = () => {
     instructions: string;
     description: string;
     caloriesBurned: string;
+    isCompleted: number; // Add isCompleted field
   }
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -37,17 +39,12 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    // console.log('!!!!!!!TEST START HERE!!!!!!!!!');
-    console.log(userProfile);
-
     fetchWorkOuts();
+    fetchPersonalRecords(); // Fetch personal records
 
-
-    // console.log('!!!!!!!TEST END HERE!!!!!!!!!');
-    // Token verification is now handled by middleware/authMiddleware.ts
   }, [router]);
 
-  const fetchWorkOuts = async() => {
+  const fetchWorkOuts = async () => {
     const formData = {
       userId: userProfile.id
     }
@@ -56,22 +53,25 @@ const Dashboard: React.FC = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData)}
-    );
+      body: JSON.stringify(formData)
+    });
     const data = await res.json();
-    console.log(data);
     setWorkouts(data.displayWorkouts);
+  }
 
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('Workouts:', workouts);
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-}
+  const fetchPersonalRecords = async () => {
+    try {
+      const res = await fetch(`/api/fetchPersonalRecords?userId=${userProfile.id}`);
+      if (!res.ok) {
+        throw new Error('Failed to fetch personal records');
+      }
+      const data = await res.json();
+      console.log('Fetched personal records:', data); // Debugging log
+      setPersonalRecords(data);
+    } catch (error) {
+      console.error('Error fetching personal records:', error);
+    }
+  };
 
   if (!isClient) {
     return null;
@@ -119,7 +119,7 @@ const Dashboard: React.FC = () => {
       // Make a request to the /api/generateWorkout endpoint to refresh the workout data
       try {
         const formData = { userId: userProfile.id };
-  
+
         const response = await fetch('/api/generateWorkout', {
           method: 'POST',
           headers: {
@@ -127,13 +127,12 @@ const Dashboard: React.FC = () => {
           },
           body: JSON.stringify(formData),
         });
-  
+
         if (!response.ok) {
           throw new Error('Failed to generate workout');
         }
 
         fetchWorkOuts();
-
 
       } catch (error) {
         console.error('Error refreshing workouts:', error);
@@ -166,55 +165,15 @@ const Dashboard: React.FC = () => {
               onClick={refreshTodoList} // Trigger the refresh function
             >
               {isLoading ? (
-              <FaSpinner className="animate-spin w-6 h-6 text-white" />
-            ) : (
-              "Refresh List"
-            )}
+                <FaSpinner className="animate-spin w-6 h-6 text-white" />
+              ) : (
+                "Refresh List"
+              )}
             </button>
           </div>
         </div>
 
-        {/* Divider Bar */}
-        <div className="border-t-2 border-gray-300 mb-4"></div>
-
-        {/* Workout Details List */}
-        <ul className="space-y-4 h-96 overflow-y-auto">
-          {workouts && workouts.length > 0 ? (
-            workouts.map((workout) => (
-              <li key={workout.workoutId} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
-                {/* Checkbox at the top right of the card */}
-                <input
-                  type="checkbox"
-                  id={`task${workout?.workoutId}`}
-                  className="absolute top-2 right-2 w-4 h-4"
-                />
-                <div className="text-sm font-semibold text-gray-600">
-                  Name: <span className="font-normal">{workout.workoutName}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Equipment: <span className="font-normal">{workout.equipment}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Duration: <span className="font-normal">{workout.duration}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Intensity: <span className="font-normal">{workout.intensity}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Instruction: <span className="font-normal">{workout.instructions}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Description: <span className="font-normal">{workout.description}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Calories Burned: <span className="font-normal">{workout.caloriesBurned}</span>
-                </div>
-              </li>
-            ))
-          ) : (
-            <p>No workouts available.</p>
-          )}
-        </ul>
+        <WorkoutList workouts={workouts} userProfile={userProfile} fetchPersonalRecords={fetchPersonalRecords} />
       </div>
     );
   };
@@ -224,6 +183,22 @@ const Dashboard: React.FC = () => {
       {/* Left Box with Analytics Chart */}
       <div className="md:w-1/2 p-4">
         <div className="bg-white shadow-md rounded-lg p-4 h-full">
+        {personalRecords ? (
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold mb-4">Personal Records</h2>
+          <div className="text-sm font-semibold text-gray-600">
+            Total Calories Burned: <span className="font-normal">{personalRecords.totalCaloriesBurned}</span>
+          </div>
+          <div className="text-sm font-semibold text-gray-600">
+            Total Workout Duration: <span className="font-normal">{personalRecords.totalWorkoutDuration}</span>
+          </div>
+          <div className="text-sm font-semibold text-gray-600">
+            Total Workouts Finished: <span className="font-normal">{personalRecords.totalWorkoutsFinished}</span>
+          </div>
+        </div>
+      ) : (
+        <p>Loading personal records...</p> // Debugging log
+      )}
           <h2 className="text-lg font-semibold mb-4">Progress Graph</h2>
           <Line data={lineData} options={lineOptions} />
         </div>
@@ -233,6 +208,109 @@ const Dashboard: React.FC = () => {
       <div className="md:w-1/2 p-4">
         <TodoList />
       </div>
+    </div>
+  );
+};
+
+const WorkoutList = ({ workouts, userProfile, fetchPersonalRecords }) => {
+  const [workoutList, setWorkoutList] = useState(workouts);
+
+  const handleCheckboxChange = async (workoutId, isChecked) => {
+    try {
+      // Update the generated workout
+      const workoutResponse = await fetch('/api/updateWorkout', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          workoutId: parseInt(workoutId, 10), // Ensure workoutId is a number
+          isCompleted: isChecked ? 1 : 0, // Ensure isCompleted is a number
+        }),
+      });
+
+      if (!workoutResponse.ok) {
+        throw new Error('Failed to update workout');
+      }
+
+      // Update the personal records
+      const personalRecordsResponse = await fetch('/api/updatePersonalRecords', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userProfile.id,
+          workoutId: parseInt(workoutId, 10), // Ensure workoutId is a number
+          isCompleted: isChecked ? 1 : 0, // Ensure isCompleted is a number
+        }),
+      });
+
+      if (!personalRecordsResponse.ok) {
+        throw new Error('Failed to update personal records');
+      }
+
+      // Update the local state to reflect the change
+      setWorkoutList((prevWorkouts) =>
+        prevWorkouts.map((workout) =>
+          workout.workoutId === workoutId
+            ? { ...workout, isCompleted: isChecked ? 1 : 0 }
+            : workout
+        )
+      );
+
+      // Fetch updated personal records
+      fetchPersonalRecords();
+    } catch (error) {
+      console.error('Error updating workout:', error);
+    }
+  };
+
+  return (
+    <div>
+      {/* Divider Bar */}
+      <div className="border-t-2 border-gray-300 mb-4"></div>
+
+      {/* Workout Details List */}
+      <ul className="space-y-4 h-96 overflow-y-auto">
+        {workoutList && workoutList.length > 0 ? (
+          workoutList.map((workout) => (
+            <li key={workout.workoutId} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+              {/* Checkbox at the top right of the card */}
+              <input
+                type="checkbox"
+                id={`task${workout?.workoutId}`}
+                className="absolute top-2 right-2 w-4 h-4"
+                checked={workout.isCompleted === 1}
+                onChange={(e) => handleCheckboxChange(workout.workoutId, e.target.checked)}
+              />
+              <div className="text-sm font-semibold text-gray-600">
+                Name: <span className="font-normal">{workout.workoutName}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Equipment: <span className="font-normal">{workout.equipment}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Duration: <span className="font-normal">{workout.duration}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Intensity: <span className="font-normal">{workout.intensity}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Instruction: <span className="font-normal">{workout.instructions}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Description: <span className="font-normal">{workout.description}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Calories Burned: <span className="font-normal">{workout.caloriesBurned}</span>
+              </div>
+            </li>
+          ))
+        ) : (
+          <li>No workouts available</li>
+        )}
+      </ul>
     </div>
   );
 };
