@@ -173,7 +173,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <WorkoutList workouts={workouts} userProfile={userProfile} fetchPersonalRecords={fetchPersonalRecords} />
+        <WorkoutList workouts={workouts} userProfile={userProfile} fetchPersonalRecords={fetchPersonalRecords} setPersonalRecords={setPersonalRecords} />
       </div>
     );
   };
@@ -212,8 +212,12 @@ const Dashboard: React.FC = () => {
   );
 };
 
-const WorkoutList = ({ workouts, userProfile, fetchPersonalRecords }) => {
+const WorkoutList = ({ workouts, userProfile, setPersonalRecords, fetchPersonalRecords }) => {
   const [workoutList, setWorkoutList] = useState(workouts);
+  const [checkboxState, setCheckboxState] = useState(() => {
+    const savedState = localStorage.getItem('checkboxState');
+    return savedState ? JSON.parse(savedState) : {};
+  });
 
   const handleCheckboxChange = async (workoutId, isChecked) => {
     try {
@@ -233,22 +237,10 @@ const WorkoutList = ({ workouts, userProfile, fetchPersonalRecords }) => {
         throw new Error('Failed to update workout');
       }
 
-      // Update the personal records
-      const personalRecordsResponse = await fetch('/api/updatePersonalRecords', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: userProfile.id,
-          workoutId: parseInt(workoutId, 10), // Ensure workoutId is a number
-          isCompleted: isChecked ? 1 : 0, // Ensure isCompleted is a number
-        }),
-      });
-
-      if (!personalRecordsResponse.ok) {
-        throw new Error('Failed to update personal records');
-      }
+      // Save the checkbox state to local storage
+      const updatedCheckboxState = { ...checkboxState, [workoutId]: isChecked };
+      localStorage.setItem('checkboxState', JSON.stringify(updatedCheckboxState));
+      setCheckboxState(updatedCheckboxState);
 
       // Update the local state to reflect the change
       setWorkoutList((prevWorkouts) =>
@@ -260,7 +252,12 @@ const WorkoutList = ({ workouts, userProfile, fetchPersonalRecords }) => {
       );
 
       // Fetch updated personal records
-      fetchPersonalRecords();
+      const personalRecordsResponse = await fetch(`/api/fetchPersonalRecords?userId=${userProfile.id}`);
+      if (!personalRecordsResponse.ok) {
+        throw new Error('Failed to fetch personal records');
+      }
+      const updatedPersonalRecords = await personalRecordsResponse.json();
+      setPersonalRecords(updatedPersonalRecords);
     } catch (error) {
       console.error('Error updating workout:', error);
     }
@@ -281,7 +278,7 @@ const WorkoutList = ({ workouts, userProfile, fetchPersonalRecords }) => {
                 type="checkbox"
                 id={`task${workout?.workoutId}`}
                 className="absolute top-2 right-2 w-4 h-4"
-                checked={workout.isCompleted === 1}
+                checked={checkboxState[workout.workoutId] || workout.isCompleted === 1}
                 onChange={(e) => handleCheckboxChange(workout.workoutId, e.target.checked)}
               />
               <div className="text-sm font-semibold text-gray-600">
