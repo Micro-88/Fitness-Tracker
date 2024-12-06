@@ -59,7 +59,8 @@ const Dashboard: React.FC = () => {
       body: JSON.stringify(formData)}
     );
     const data = await res.json();
-    setWorkouts(data.workouts);
+    console.log(data);
+    setWorkouts(data.displayWorkouts);
 
     console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
