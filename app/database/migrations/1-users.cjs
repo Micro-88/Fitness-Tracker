@@ -30,6 +30,10 @@ module.exports = {
           type: Sequelize.INTEGER.UNSIGNED,
           allowNull: false,
         },
+        currentBodyWeight: {
+          type: Sequelize.FLOAT,
+          allowNull: true,
+        },
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,

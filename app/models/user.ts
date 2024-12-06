@@ -12,6 +12,7 @@ class User extends Model {
   declare password: string;
   declare gender: Gender;                       //added gender and age
   declare age: number;
+  declare currentBodyWeight: number;            // added currentBodyWeight
 }
 
 User.init(
@@ -36,6 +37,10 @@ User.init(
     age: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+    },
+    currentBodyWeight: {                                            // added currentBodyWeight
+      type: DataTypes.FLOAT,
+      allowNull: true, 
     },
   },
   {
