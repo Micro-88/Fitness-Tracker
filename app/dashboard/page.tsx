@@ -213,37 +213,6 @@ const Dashboard: React.FC = () => {
             ))
           ) : (
             <p>No workouts available.</p>
-            // workouts.map((workout) => (
-            //   <li key={workout.workoutId} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
-            //     {/* Checkbox at the top right of the card */}
-            //     <input
-            //       type="checkbox"
-            //       id={`task${workout?.workoutId}`}
-            //       className="absolute top-2 right-2 w-4 h-4"
-            //     />
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Name: <span className="font-normal">{workout.workoutName}</span>
-            //     </div>
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Equipment: <span className="font-normal">{workout.equipment}</span>
-            //     </div>
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Duration: <span className="font-normal">{workout.duration}</span>
-            //     </div>
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Intensity: <span className="font-normal">{workout.intensity}</span>
-            //     </div>
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Instruction: <span className="font-normal">{workout.instructions}</span>
-            //     </div>
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Description: <span className="font-normal">{workout.description}</span>
-            //     </div>
-            //     <div className="text-sm font-semibold text-gray-600">
-            //       Calories Burned: <span className="font-normal">{workout.caloriesBurned}</span>
-            //     </div>
-            //   </li>
-            // ))
           )}
         </ul>
       </div>

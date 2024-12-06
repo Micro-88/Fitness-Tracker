@@ -22,15 +22,16 @@ export async function POST(req: NextRequest) {
     console.log('User ID:', userId);
 
     // Fetch existing workout plans from the workoutPlan table
-    const existingWorkoutPlans = await WorkoutPlan.findAll({
-        attributes: ['userId', 'workoutId'],
-      });
+    const userWorkoutPlans = await WorkoutPlan.findAll({
+      where: { userId },
+      attributes: ['workoutId'], // Only select the workoutId column
+    });
   
     // Log the retrieved data
     // console.log('Existing workout plans from workoutPlan table:', existingWorkoutPlans);
 
       // Extract all workoutIds from the workoutPlan table
-    const workoutIds = existingWorkoutPlans.map(plan => plan.workoutId);
+    const workoutIds = userWorkoutPlans.map(plan => plan.workoutId);
     
     const workoutsDetails = await Workout.findAll({
         where: {
