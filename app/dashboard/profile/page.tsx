@@ -108,9 +108,9 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-auto md:h-screen bg-[#1d1919] text-white">
+    <div className="flex flex-col md:flex-row h-auto md:h-screen bg-gray-800 text-white">
       {/* Profile image section */}
-      <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-[#333] p-8 gap-4">
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-gray-950 p-8 gap-4">
         <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white">
           <UserCircleIcon className="w-full h-full object-cover" />
         </div>
@@ -119,7 +119,7 @@ const Profile: React.FC = () => {
 
       {/* Right details section */}
       <div className="w-full md:w-1/2 flex justify-center items-center p-8">
-        <div className="w-full max-w-md bg-[#252525] p-8 rounded-lg text-left shadow-lg">
+        <div className="w-full max-w-md bg-gray-900 p-8 rounded-lg text-left shadow-lg">
           <h1 className="text-2xl mb-6">Profile Details</h1>
           {editMode ? (
             <form onSubmit={handleEditProfile}>
@@ -172,7 +172,7 @@ const Profile: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setEditMode(false)}
-                className="w-full py-2 bg-gray-600 text-white rounded-full text-sm lowercase mt-4 hover:bg-gray-700 transform hover:scale-105 transition duration-300"
+                className="w-full py-2 bg-red-700 text-white rounded-full text-sm lowercase mt-4 hover:bg-red-800 transform hover:scale-105 transition duration-300"
               >
                 Cancel
               </button>

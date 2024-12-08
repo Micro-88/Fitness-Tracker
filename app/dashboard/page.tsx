@@ -94,8 +94,8 @@ const Dashboard: React.FC = () => {
       {
         label: "Progress",
         fill: false,
-        backgroundColor: "#36A2EB",
-        borderColor: "#36A2EB",
+        backgroundColor: "rgb(165 243 252)",
+        borderColor: "rgb(34 211 238)",
         data: [65, 59, 80, 81, 56, 55, 40],
       },
     ],
@@ -105,6 +105,32 @@ const Dashboard: React.FC = () => {
     scales: {
       y: {
         beginAtZero: true,
+        grid: {
+          color: "rgb(250 250 250)",
+        },
+        ticks: {
+          color: "#FFFFFF",
+        },
+      },
+      x: {
+        grid: {
+          color: "rgb(250 250 250)",
+        },
+        ticks: {
+          color: "#FFFFFF",
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: "#FFFFFF",
+        },
+      },
+      tooltip: {
+        backgroundColor: "rgb(75 85 99)",
+        titleColor: "#FFFFFF",
+        bodyColor: "#FFFFFF",
       },
     },
   };
@@ -144,10 +170,10 @@ const Dashboard: React.FC = () => {
     };
 
     return (
-      <div className="bg-white shadow-md rounded-lg p-4 h-full">
+      <div className="bg-gray-800 shadow-md rounded-lg p-4 h-full">
         {/* Header Section */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg text-black font-semibold">To-Do List</h2>
+          <h2 className="text-lg font-semibold">To-Do List</h2>
           <div className="flex space-x-4">
             <button
               className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
@@ -223,7 +249,7 @@ const Dashboard: React.FC = () => {
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Box with Analytics Chart */}
       <div className="md:w-1/2 p-4">
-        <div className="bg-white shadow-md rounded-lg p-4 h-full">
+        <div className="bg-gray-800 shadow-md rounded-lg p-4 h-full">
           <h2 className="text-lg font-semibold mb-4">Progress Graph</h2>
           <Line data={lineData} options={lineOptions} />
         </div>
