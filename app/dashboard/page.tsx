@@ -6,6 +6,7 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from './../helpers/profile.helper';
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
+import Workout from '../models/workout';
 
 Chart.register(...registerables);
 
@@ -13,6 +14,7 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading
+  const [checkboxStates, setCheckboxStates] = useState<Record<string, boolean>>({});
   interface Workout {
     workoutId: string;
     workoutName: string;
@@ -22,6 +24,7 @@ const Dashboard: React.FC = () => {
     instructions: string;
     description: string;
     caloriesBurned: string;
+    isCompleted: string;
   }
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -66,11 +69,17 @@ const Dashboard: React.FC = () => {
     console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('Workouts:', workouts);
+    console.log('Workouts:', data);
     console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
+    const initialCheckboxStates: Record<string, boolean> = {};
+    data.displayWorkouts.forEach((workout: { workoutId: string; isCompleted: boolean }) => {
+      initialCheckboxStates[workout.workoutId] = workout.isCompleted;
+    });
+    setCheckboxStates(initialCheckboxStates);
 }
 
   if (!isClient) {
@@ -137,6 +146,28 @@ const Dashboard: React.FC = () => {
 
   const handleGenerateWorkout = () => {
     router.push('/workout_planner');
+  };
+
+  const handleCheckboxChange = async (workoutId: string, checked: boolean) => {
+    try {
+      const formData = { userId: userProfile.id, workoutId: workoutId, checked };
+
+      const response = await fetch("/api/checkbox", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update checkbox status");
+      }
+
+      console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
+    } catch (error) {
+      console.error("Error updating checkbox status:", error);
+    }
   };
 
   const TodoList = () => {
@@ -211,8 +242,17 @@ const Dashboard: React.FC = () => {
                 {/* Checkbox at the top right of the card */}
                 <input
                   type="checkbox"
-                  id={`task${workout?.workoutId}`}
+                  id={`task${workout.workoutId}`}
                   className="absolute top-2 right-2 w-4 h-4"
+                  checked={checkboxStates[workout.workoutId] || false} // Use state for checkbox value
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+                    setCheckboxStates((prev) => ({
+                      ...prev,
+                      [workout.workoutId]: isChecked,
+                    }));
+                    handleCheckboxChange(workout.workoutId, isChecked); // Update server
+                  }}
                 />
                 <div className="text-sm font-semibold text-gray-600">
                   Name: <span className="font-normal">{workout.workoutName}</span>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Follow these steps to run the app
 1. Clone the repo to your device
 2. Create a `.env` file in the root directory, and then paste the following content into it.
@@ -17,3 +18,6 @@
    - `npm run migrate`
    - `npm run seed`
    - `npm run dev`
+=======
+# Webdev2-FitnessTracker
+>>>>>>> origin/main

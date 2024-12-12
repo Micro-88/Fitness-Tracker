@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
           'instructions', 
           'description', 
           'caloriesBurned',
+          'isCompleted'
         ], // Fetch specific columns from the generatedWorkouts table
     });
 
@@ -53,6 +54,7 @@ export async function POST(req: NextRequest) {
           instructions: generatedWorkout.instructions,
           description: generatedWorkout.description, 
           caloriesBurned: generatedWorkout.caloriesBurned,
+          isCompleted: generatedWorkout.isCompleted,
         };
       }
       return null; // If no matching workout is found
