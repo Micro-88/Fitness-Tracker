@@ -89,13 +89,6 @@ const Dashboard: React.FC = () => {
     return <p>{error}</p>;
   }
 
-  const handleSignOut = () => {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    router.push('/loginpage');
-    console.log(handleSignOut);
-  };
-
   // Sample data for the line chart
   const lineData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
