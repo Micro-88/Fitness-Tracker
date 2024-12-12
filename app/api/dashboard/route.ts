@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from 'next/server';
-import WorkoutPlan from '../../models/workoutPlan';
 import sequelize from '../../db_connection';
 import Workout from '@/app/models/workout';
 import { Op } from 'sequelize';

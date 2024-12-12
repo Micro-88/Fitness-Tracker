@@ -74,6 +74,7 @@ const Profile: React.FC = () => {
         setError('Failed to update profile');
       }
     } catch (error) {
+      console.error(error);
       setError('Failed to update profile');
     }
   };
@@ -95,6 +96,7 @@ const Profile: React.FC = () => {
         setError('Failed to delete profile');
       }
     } catch (error) {
+      console.error(error);
       setError('Failed to delete profile');
     }
   };

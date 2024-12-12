@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('Workouts', [
       // Workouts for Lose Weight
       { name: 'Jumping Jacks', description: 'A cardio exercise for overall fitness.', goal: 'Lose_Weight', level: 'Novice', equipment: 'BodyWeight', duration: 10, muscleGroup: 'UpperBody', instructions: 'Jump with your legs and arms wide.' },
@@ -82,7 +82,7 @@ module.exports = {
     ]);
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('Workouts', null, {});
   }
 };

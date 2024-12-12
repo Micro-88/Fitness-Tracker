@@ -39,6 +39,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ token: newToken, profile: updatedProfile }, { status: 200 });
   } catch (error) {
+    console.error('Error Updating profile:', error);
     return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
   }
 }
@@ -58,6 +59,7 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ message: 'Profile deleted successfully' }, { status: 200 });
   } catch (error) {
+    console.error('Error Deleting profile:', error);
     return NextResponse.json({ error: 'Failed to delete profile' }, { status: 500 });
   }
 }

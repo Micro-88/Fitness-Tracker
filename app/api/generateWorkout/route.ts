@@ -2,7 +2,6 @@ import { NextResponse, NextRequest } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import GeneratedWorkout from '@/app/models/generateWorkout';
 import WorkoutPlan from '../../models/workoutPlan';
-import sequelize from '../../db_connection';
 import Workout from '@/app/models/workout';
 
 export async function POST(req: NextRequest) {

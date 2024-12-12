@@ -1,7 +1,6 @@
 'use strict';
 
-require('reflect-metadata');
-const { AllowNull } = require('sequelize-typescript');
+import ('reflect-metadata');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -56,7 +55,7 @@ module.exports = {
       });
     },
   
-    async down(queryInterface, Sequelize) {
+    async down(queryInterface) {
       await queryInterface.dropTable('Workouts');
     },
   };

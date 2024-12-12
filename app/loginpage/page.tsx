@@ -84,7 +84,7 @@ const Login: React.FC = () => {
           </form>
           {error && <p className="text-red-500 mt-4">{error}</p>}
           <p className="text-white mt-4 text-center">
-          Don't have an account? <Link href="/signup" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Sign up</Link>
+          Don&apos;t have an account? <Link href="/signup" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Sign up</Link>
           </p>
         </div>
       </div>

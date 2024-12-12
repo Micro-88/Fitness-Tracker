@@ -6,7 +6,6 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from './../helpers/profile.helper';
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
-import Workout from '../models/workout';
 
 Chart.register(...registerables);
 
@@ -94,6 +93,7 @@ const Dashboard: React.FC = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
     router.push('/loginpage');
+    console.log(handleSignOut);
   };
 
   // Sample data for the line chart

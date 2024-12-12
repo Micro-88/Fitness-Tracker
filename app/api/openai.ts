@@ -28,6 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json({ result: data.choices[0].text.trim() });
     } catch (error) {
+      console.error('Error reaching OpenAI:', error);
       return res.status(500).json({ error: 'Something went wrong with the API request.' });
     }
   } else {

@@ -66,7 +66,7 @@ const WorkoutPlanner: React.FC = () => {
 
 
   
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async () => {
     setIsLoading(true);
 
     const userInput = {
@@ -102,6 +102,8 @@ const WorkoutPlanner: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
+
+      console.log(GenerateWorkout);
 
       // Redirect to the dashboard after successful plan generation
       router.push('/dashboard');

@@ -7,7 +7,7 @@ const secretKey = 'your_secret_key';
 
 export async function POST(req: NextRequest) {
   try {
-    const { username, password } = await req.json();
+    const { username } = await req.json();
     await sequelize.authenticate();
     const user = await User.findOne({ where: { username } });
 
