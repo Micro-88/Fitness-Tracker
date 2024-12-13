@@ -29,7 +29,7 @@ const WorkoutPlanner: React.FC = () => {
   useEffect(() => {
     const userProfile = GetUserProfileInToken();
     setUserId(userProfile.id);
-  });
+  },[]);
 
   const totalSteps = 4; // Reduced total steps
   const progressPercentage = (step / totalSteps) * 100;

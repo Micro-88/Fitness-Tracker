@@ -36,7 +36,7 @@ const SignUp: React.FC = () => {
 
       if (response.ok) {
         console.log('User created successfully');
-        router.push('/loginpage'); // Redirect to login page upon successful sign-up
+        router.push('/login'); // Redirect to login page upon successful sign-up
       } else {
         const errorData = await response.json();
         console.error('Failed to create user:', errorData);
@@ -85,7 +85,7 @@ const SignUp: React.FC = () => {
             <button type="submit" className="w-full p-2 bg-[#333] text-white border-none rounded-full cursor-pointer text-sm">Sign Up</button>
           </form>
           <p className="text-white mt-4 text-center">
-          Already have an account? <Link href="/loginpage" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Log in</Link>
+          Already have an account? <Link href="/login" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Log in</Link>
           </p>
           {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>

@@ -12,7 +12,7 @@ export default function SideNav() {
   const handleSignOut = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
-    router.push('/loginpage');
+    router.push('/');
   };
 
   return (
