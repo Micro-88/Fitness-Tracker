@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
 
     // console.log('!!!!!!!TEST END HERE!!!!!!!!!');
     // Token verification is now handled by middleware/authMiddleware.ts
-  }, [router, userProfile?.id]);
+  }, [router, fetchWorkOuts, userProfile?.id]);
 
   if (!isClient) {
     return null;
