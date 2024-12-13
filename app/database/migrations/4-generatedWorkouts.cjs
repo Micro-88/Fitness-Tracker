@@ -48,10 +48,6 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      caloriesBurned: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
       isCompleted: {
         type: Sequelize.BOOLEAN,
         allowNull: false, // The field is required

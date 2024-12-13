@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
           'intensity', 
           'instructions', 
           'description', 
-          'caloriesBurned',
           'isCompleted'
         ], // Fetch specific columns from the generatedWorkouts table
     });
@@ -52,7 +51,6 @@ export async function POST(req: NextRequest) {
           intensity: generatedWorkout.intensity,
           instructions: generatedWorkout.instructions,
           description: generatedWorkout.description, 
-          caloriesBurned: generatedWorkout.caloriesBurned,
           isCompleted: generatedWorkout.isCompleted,
         };
       }

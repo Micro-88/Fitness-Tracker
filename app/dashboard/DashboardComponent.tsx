@@ -23,7 +23,6 @@ const DashboardComponent: React.FC = () => {
     intensity: string;
     instructions: string;
     description: string;
-    caloriesBurned: string;
     isCompleted: string;
   }
 
@@ -239,9 +238,6 @@ const DashboardComponent: React.FC = () => {
                 </div>
                 <div className="text-sm font-semibold text-gray-600">
                   Description: <span className="font-normal">{workout.description}</span>
-                </div>
-                <div className="text-sm font-semibold text-gray-600">
-                  Calories Burned: <span className="font-normal">{workout.caloriesBurned}</span>
                 </div>
               </li>
             ))

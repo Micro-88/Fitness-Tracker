@@ -11,7 +11,6 @@ class GeneratedWorkout extends Model {
   declare intensity: string;
   declare instructions: string;
   declare description: string;
-  declare caloriesBurned: number;
   declare isCompleted: boolean; // Add the isCompleted field
 }
 
@@ -48,10 +47,6 @@ GeneratedWorkout.init(
     description: {
       type: DataTypes.TEXT,
       allowNull: true, // Allowing description to be nullable as per migration
-    },
-    caloriesBurned: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
     },
     isCompleted: {
       type: DataTypes.BOOLEAN, // Add the new field here

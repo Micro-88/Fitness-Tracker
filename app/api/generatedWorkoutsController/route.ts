@@ -31,11 +31,11 @@ export async function GET(req: NextRequest) {
 // POST /api/generatedWorkoutController (Create Generated Workout)
 export async function POST(req: NextRequest) {
   try {
-    const { workoutId, userId, duration, intensity, instructions, description, caloriesBurned } = await req.json();
+    const { workoutId, userId, duration, intensity, instructions, description,  } = await req.json();
 
-    if (!userId || !workoutId || !duration || !caloriesBurned) {
+    if (!userId || !workoutId || !duration ) {
         return NextResponse.json(
-          { error: 'Missing required fields: userId, workoutId, duration, or caloriesBurned' },
+          { error: 'Missing required fields: userId, workoutId, duration' },
           { status: 400 } // Bad Request
         );
       }
@@ -51,7 +51,6 @@ export async function POST(req: NextRequest) {
       intensity,
       instructions,
       description,
-      caloriesBurned,
     });
 
     // Return the newly created generated workout as JSON with status 201 (Created)
@@ -65,7 +64,7 @@ export async function POST(req: NextRequest) {
 // PUT /api/generatedWorkoutController (Update Generated Workout)
 export async function PUT(req: NextRequest) {
   try {
-    const { id, workoutId, userId, duration, intensity, instructions, description, caloriesBurned } = await req.json();
+    const { id, workoutId, userId, duration, intensity, instructions, description } = await req.json();
     
     // Authenticate the database connection
     await sequelize.authenticate();
@@ -83,7 +82,6 @@ export async function PUT(req: NextRequest) {
     generatedWorkout.intensity = intensity || generatedWorkout.intensity;
     generatedWorkout.instructions = instructions || generatedWorkout.instructions;
     generatedWorkout.description = description || generatedWorkout.description;
-    generatedWorkout.caloriesBurned = caloriesBurned || generatedWorkout.caloriesBurned;
 
     // Save the updated generated workout
     await generatedWorkout.save();
