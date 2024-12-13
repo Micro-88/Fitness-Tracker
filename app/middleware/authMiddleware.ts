@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return NextResponse.redirect('/loginpage');
+    return NextResponse.redirect('/login');
   }
 
   try {
@@ -16,6 +16,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   } catch (error) {
     console.error('Invalid token:', error);
-    return NextResponse.redirect('/loginpage');
+    return NextResponse.redirect('/login');
   }
 }

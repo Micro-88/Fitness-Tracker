@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -30,26 +30,7 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
 
-  useEffect(() => {
-    setIsClient(true);
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-
-    if (!token) {
-      router.push('/loginpage');
-      return;
-    }
-
-    // console.log('!!!!!!!TEST START HERE!!!!!!!!!');
-    console.log(userProfile);
-
-    fetchWorkOuts();
-
-
-    // console.log('!!!!!!!TEST END HERE!!!!!!!!!');
-    // Token verification is now handled by middleware/authMiddleware.ts
-  }, [router]);
-
-  const fetchWorkOuts = async() => {
+  const fetchWorkOuts = useCallback(async() => {
     const formData = {
       userId: userProfile.id
     }
@@ -79,7 +60,25 @@ const Dashboard: React.FC = () => {
       initialCheckboxStates[workout.workoutId] = workout.isCompleted;
     });
     setCheckboxStates(initialCheckboxStates);
-}
+}, [userProfile.id]);
+
+  useEffect(() => {
+    setIsClient(true);
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    // console.log('!!!!!!!TEST START HERE!!!!!!!!!');
+    console.log(userProfile);
+
+    fetchWorkOuts();
+
+    // console.log('!!!!!!!TEST END HERE!!!!!!!!!');
+    // Token verification is now handled by middleware/authMiddleware.ts
+  }, [router, fetchWorkOuts ,userProfile]);
 
   if (!isClient) {
     return null;

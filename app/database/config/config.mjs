@@ -18,12 +18,13 @@ if (process.env.NODE_ENV === "production"){
   }
 }
 
-export default {
+const config = {
   development: options,
   test: options,
   production: options,
-}
+};
 
+export default config;
 
 
 // {

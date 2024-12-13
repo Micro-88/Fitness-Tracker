@@ -24,7 +24,7 @@ const Profile: React.FC = () => {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     if (!token) {
-      router.push('/loginpage');
+      router.push('/login');
       return;
     }
 
@@ -91,7 +91,7 @@ const Profile: React.FC = () => {
       if (res.ok) {
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
-        router.push('/loginpage');
+        router.push('/login');
       } else {
         setError('Failed to delete profile');
       }
