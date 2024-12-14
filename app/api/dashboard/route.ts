@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
           { message: 'No workout plans found for this user.' },
           { status: 200 }
       );
-  }
+    }
 
     const workoutIds = generatedWorkouts.map(workout => workout.workoutId);
 

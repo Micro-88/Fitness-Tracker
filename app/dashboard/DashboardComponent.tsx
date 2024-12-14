@@ -167,7 +167,8 @@ const DashboardComponent: React.FC = () => {
   
       const data = await response.json();
       console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
-  
+      console.log(data);
+
       // Call the updateCaloriesBurned API endpoint
       const updateCaloriesResponse = await fetch("/api/updateCaloriesBurned", {
         method: "PUT",
@@ -183,7 +184,8 @@ const DashboardComponent: React.FC = () => {
   
       const updateCaloriesData = await updateCaloriesResponse.json();
       console.log(`Calories burned for workout ${workoutId} updated successfully`);
-  
+      console.log(updateCaloriesData);
+      
       // Refetch the personal records to update the display
       await fetchPersonalRecords();
     } catch (error) {
