@@ -14,7 +14,19 @@ const DashboardComponent: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading
   const [checkboxStates, setCheckboxStates] = useState<Record<string, boolean>>({});
-
+  const [chartData, setChartData] = useState<number[]>([0]); // Line chart data
+  const [lineData, setLineData] = useState({
+    labels: [], 
+    datasets: [
+      {
+        label: "Progress",
+        fill: false,
+        backgroundColor: "rgb(165 243 252)",
+        borderColor: "rgb(34 211 238)",
+        data: [],
+      },
+    ],
+  });
   interface Workout {
     workoutId: string;
     workoutName: string;
@@ -24,6 +36,11 @@ const DashboardComponent: React.FC = () => {
     instructions: string;
     description: string;
     isCompleted: string;
+  }
+
+  interface ChartDataEntry {
+    date: Date;  // Or Date, depending on the format of the date
+    progress: number;
   }
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -41,6 +58,7 @@ const DashboardComponent: React.FC = () => {
       },
       body: JSON.stringify(formData)
     });
+
     const data = await res.json();
     setWorkouts(data.displayWorkouts);
 
@@ -49,6 +67,45 @@ const DashboardComponent: React.FC = () => {
       initialCheckboxStates[workout.workoutId] = workout.isCompleted;
     });
     setCheckboxStates(initialCheckboxStates);
+  }, [userProfile.id]);
+
+  const fetchChartData = useCallback(async () => {
+    setIsLoading(true);
+    const formData = {
+      userId: userProfile.id,
+    };
+  
+    try {
+      const response = await fetch('/api/linedata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+      setChartData(data.serializedData);
+
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log(chartData);
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
+      // const chartLabels = data.map((entry: ChartDataEntry) => entry.date); // Extract dates
+      // const chartProgress = data.map((entry: ChartDataEntry) => entry.progress); 
+
+    } catch (error) {
+      setError("An error occurred while fetching chart data");
+      console.error('Error fetching chart data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [userProfile.id]);
 
   useEffect(() => {
@@ -61,7 +118,8 @@ const DashboardComponent: React.FC = () => {
     }
 
     fetchWorkOuts();
-  }, [isClient, router, fetchWorkOuts, userProfile?.id]);
+    fetchChartData();
+  }, [isClient, router, fetchWorkOuts, fetchChartData, userProfile?.id]);
 
   if (!isClient) {
     return null;
@@ -71,18 +129,17 @@ const DashboardComponent: React.FC = () => {
     return <p>{error}</p>;
   }
 
-  const lineData = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-      {
-        label: "Progress",
-        fill: false,
-        backgroundColor: "rgb(165 243 252)",
-        borderColor: "rgb(34 211 238)",
-        data: [65, 59, 80, 81, 56, 55, 40],
-      },
-    ],
-  };
+  // const getDaysOfWeek = () => {
+  //   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  //   const currentDate = new Date();
+  //   const currentDayIndex = currentDate.getDay(); // Get the index of the current day
+    
+  //   // Create an array of the next 7 days, starting from Sunday
+  //   return [
+  //     ...daysOfWeek.slice(currentDayIndex), // Days from current day to Saturday
+  //     ...daysOfWeek.slice(0, currentDayIndex) // Days from Sunday to the day before current day
+  //   ];
+  // };
 
   const lineOptions = {
     scales: {
