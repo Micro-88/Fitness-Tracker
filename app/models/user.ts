@@ -47,7 +47,7 @@ User.init(
     sequelize,
     tableName: 'users',
     hooks: {
-      afterCreate: async (user, options) => {
+      afterCreate: async (user) => {
         const PersonalRecord = (await import('./personalRecord')).default;
         await PersonalRecord.create({
           userId: user.id,

@@ -14,24 +14,6 @@ const DashboardComponent: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading
   const [checkboxStates, setCheckboxStates] = useState<Record<string, boolean>>({});
-<<<<<<< HEAD
-  const [chartData, setChartData] = useState<number[]>([0]); // Line chart data
-  const [lineData, setLineData] = useState({
-    labels: [], 
-    datasets: [
-      {
-        label: "Progress",
-        fill: false,
-        backgroundColor: "rgb(165 243 252)",
-        borderColor: "rgb(34 211 238)",
-        data: [],
-      },
-    ],
-  });
-=======
-  const [personalRecords, setPersonalRecords] = useState<any>(null); // State for personal records
-
->>>>>>> 7331d1358308475bd0cd1769eede7d300c5b1355
   interface Workout {
     workoutId: string;
     workoutName: string;
@@ -44,14 +26,19 @@ const DashboardComponent: React.FC = () => {
     METscore: number; // Add METscore field
   }
 
-  interface ChartDataEntry {
-    date: Date;  // Or Date, depending on the format of the date
-    progress: number;
+  interface PersonalRecord {
+    userId: number;
+    totalCaloriesBurned: number;
+    totalWorkoutDuration: number;
+    totalWorkoutsFinished: number;
+    createdAt: Date;
+    updatedAt: Date;
   }
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
+  const [personalRecords, setPersonalRecords] = useState<PersonalRecord | null>(null);
 
   const fetchWorkOuts = useCallback(async () => {
     const formData = {
@@ -64,7 +51,6 @@ const DashboardComponent: React.FC = () => {
       },
       body: JSON.stringify(formData)
     });
-
     const data = await res.json();
     setWorkouts(data.displayWorkouts);
 
@@ -75,44 +61,6 @@ const DashboardComponent: React.FC = () => {
     setCheckboxStates(initialCheckboxStates);
   }, [userProfile.id]);
 
-<<<<<<< HEAD
-  const fetchChartData = useCallback(async () => {
-    setIsLoading(true);
-    const formData = {
-      userId: userProfile.id,
-    };
-  
-    try {
-      const response = await fetch('/api/linedata', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-      setChartData(data.serializedData);
-
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log(chartData);
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
-      // const chartLabels = data.map((entry: ChartDataEntry) => entry.date); // Extract dates
-      // const chartProgress = data.map((entry: ChartDataEntry) => entry.progress); 
-
-    } catch (error) {
-      setError("An error occurred while fetching chart data");
-      console.error('Error fetching chart data:', error);
-    } finally {
-      setIsLoading(false);
-=======
   const fetchPersonalRecords = useCallback(async () => {
     try {
       const res = await fetch(`/api/fetchPersonalRecords?userId=${userProfile.id}`);
@@ -123,7 +71,6 @@ const DashboardComponent: React.FC = () => {
       setPersonalRecords(data);
     } catch (error) {
       console.error('Error fetching personal records:', error);
->>>>>>> 7331d1358308475bd0cd1769eede7d300c5b1355
     }
   }, [userProfile.id]);
 
@@ -137,13 +84,8 @@ const DashboardComponent: React.FC = () => {
     }
 
     fetchWorkOuts();
-<<<<<<< HEAD
-    fetchChartData();
-  }, [isClient, router, fetchWorkOuts, fetchChartData, userProfile?.id]);
-=======
     fetchPersonalRecords(); // Fetch personal records
   }, [isClient, router, fetchWorkOuts, fetchPersonalRecords, userProfile?.id]);
->>>>>>> 7331d1358308475bd0cd1769eede7d300c5b1355
 
   if (!isClient) {
     return null;
@@ -153,17 +95,18 @@ const DashboardComponent: React.FC = () => {
     return <p>{error}</p>;
   }
 
-  // const getDaysOfWeek = () => {
-  //   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  //   const currentDate = new Date();
-  //   const currentDayIndex = currentDate.getDay(); // Get the index of the current day
-    
-  //   // Create an array of the next 7 days, starting from Sunday
-  //   return [
-  //     ...daysOfWeek.slice(currentDayIndex), // Days from current day to Saturday
-  //     ...daysOfWeek.slice(0, currentDayIndex) // Days from Sunday to the day before current day
-  //   ];
-  // };
+  const lineData = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+      {
+        label: "Progress",
+        fill: false,
+        backgroundColor: "rgb(165 243 252)",
+        borderColor: "rgb(34 211 238)",
+        data: [65, 59, 80, 81, 56, 55, 40],
+      },
+    ],
+  };
 
   const lineOptions = {
     scales: {
@@ -221,7 +164,7 @@ const DashboardComponent: React.FC = () => {
 
       const data = await response.json();
       console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
-
+      console.log(data);
       // Refetch the personal records to update the display
       await fetchPersonalRecords();
     } catch (error) {

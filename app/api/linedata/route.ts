@@ -21,15 +21,15 @@ export async function POST(req: NextRequest) {
     // Convert Sequelize instances to plain objects
     const serializedData = chartData.map(entry => entry.get({ plain: true }));
 
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log(serializedData);
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log(serializedData);
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
       return NextResponse.json({ serializedData }, { status: 200 });
     } catch (error) {
