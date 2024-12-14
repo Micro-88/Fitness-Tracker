@@ -38,14 +38,20 @@ export async function PUT(req: NextRequest) {
     const { METscore } = workout as { METscore: number };
     const { currentBodyWeight } = user as { currentBodyWeight: number };
 
-
     console.log(`Duration: ${duration}, METscore: ${METscore}, currentBodyWeight: ${currentBodyWeight}`);
     const caloriesBurned = (duration * METscore * currentBodyWeight) / 200;
 
     generatedWorkout.caloriesBurned = caloriesBurned;
-    await generatedWorkout.save();
+    console.log(`Calories burned calculated: ${caloriesBurned}`);
 
-    return NextResponse.json({ message: 'Calories burned updated successfully', generatedWorkout }, { status: 200 });
+    try {
+      await generatedWorkout.save();
+      console.log('Generated workout saved successfully');
+      return NextResponse.json({ message: 'Calories burned updated successfully', generatedWorkout }, { status: 200 });
+    } catch (error) {
+      console.error('Error saving generated workout:', error);
+      return NextResponse.json({ error: 'Failed to update calories burned' }, { status: 500 });
+    }
   } catch (error) {
     console.error('Error updating calories burned:', error);
     return NextResponse.json({ error: 'Failed to update calories burned' }, { status: 500 });

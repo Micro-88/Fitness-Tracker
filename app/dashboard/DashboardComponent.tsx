@@ -149,7 +149,7 @@ const DashboardComponent: React.FC = () => {
   const handleCheckboxChange = async (workoutId: string, checked: boolean) => {
     try {
       const formData = { userId: userProfile.id, workoutId: workoutId, checked };
-
+  
       const response = await fetch("/api/checkbox", {
         method: "POST",
         headers: {
@@ -157,14 +157,28 @@ const DashboardComponent: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to update workout status");
       }
-
-      const data = await response.json();
+  
       console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
-      console.log(data);
+  
+      // Call the updateCaloriesBurned API endpoint
+      const updateCaloriesResponse = await fetch("/api/updateCaloriesBurned", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: userProfile.id, workoutId: workoutId }),
+      });
+  
+      if (!updateCaloriesResponse.ok) {
+        throw new Error("Failed to update calories burned");
+      }
+  
+      console.log(`Calories burned for workout ${workoutId} updated successfully`);
+  
       // Refetch the personal records to update the display
       await fetchPersonalRecords();
     } catch (error) {
