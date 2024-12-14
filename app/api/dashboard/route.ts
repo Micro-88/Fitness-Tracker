@@ -24,6 +24,13 @@ export async function POST(req: NextRequest) {
         ], // Fetch specific columns from the generatedWorkouts table
     });
 
+    if (generatedWorkouts.length === 0) {
+      return NextResponse.json(
+          { message: 'No workout plans found for this user.' },
+          { status: 200 }
+      );
+  }
+
     const workoutIds = generatedWorkouts.map(workout => workout.workoutId);
 
     if (workoutIds.length === 0) {
