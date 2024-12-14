@@ -55,9 +55,12 @@ const DashboardComponent: React.FC = () => {
     setWorkouts(data.displayWorkouts);
 
     const initialCheckboxStates: Record<string, boolean> = {};
-    data.displayWorkouts.forEach((workout: { workoutId: string; isCompleted: boolean }) => {
-      initialCheckboxStates[workout.workoutId] = workout.isCompleted;
-    });
+
+    if (data.displayWorkouts && Array.isArray(data.displayWorkouts)) {
+      data.displayWorkouts.forEach((workout: { workoutId: string; isCompleted: boolean }) => {
+        initialCheckboxStates[workout.workoutId] = workout.isCompleted;
+      });
+    }
     setCheckboxStates(initialCheckboxStates);
   }, [userProfile.id]);
 
