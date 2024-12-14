@@ -33,6 +33,7 @@ class Workout extends Model {
   declare duration: number;
   declare muscleGroup: string;
   declare instructions: string;
+  declare METscore: number;
 }
 
 Workout.init(
@@ -72,6 +73,9 @@ Workout.init(
     },
     instructions: {
       type: DataTypes.TEXT,
+    },
+    METscore: {
+      type: DataTypes.FLOAT,
     },
   },
   { sequelize, modelName: 'Workout' }

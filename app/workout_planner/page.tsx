@@ -13,6 +13,7 @@ const WorkoutPlanner: React.FC = () => {
   const [step, setStep] = useState(1);
   const [workoutPlan, setWorkoutPlan] = useState<string | null>(null); // To display the response
   const [isLoading, setIsLoading] = useState(false); // State for loading
+  const [bodyWeight, setBodyWeight] = useState(""); // State for body weight
   const router = useRouter();
 
   const equipmentOptions = [
@@ -25,13 +26,12 @@ const WorkoutPlanner: React.FC = () => {
     "Bands",
   ];
 
-  
   useEffect(() => {
     const userProfile = GetUserProfileInToken();
     setUserId(userProfile.id);
-  },[]);
+  }, []);
 
-  const totalSteps = 4; // Reduced total steps
+  const totalSteps = 5; // Increased total steps to include body weight step
   const progressPercentage = (step / totalSteps) * 100;
 
   const handleEquipmentChange = (item: string) => {
@@ -48,8 +48,17 @@ const WorkoutPlanner: React.FC = () => {
     );
   };
 
-  const nextStep = () => setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
-  const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
+  const handleNextStep = () => {
+    if (step < totalSteps) {
+      setStep(step + 1);
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
 
   const isStepValid = () => {
     switch (step) {
@@ -59,6 +68,8 @@ const WorkoutPlanner: React.FC = () => {
         return level !== "";
       case 3:
         return equipment.length > 0;
+      case 4:
+        return bodyWeight !== "";
       default:
         return true;
     }
@@ -74,9 +85,26 @@ const WorkoutPlanner: React.FC = () => {
       level,
       equipment,
       userId,
+      bodyWeight,
     };
   
     try {
+      // Update the user's body weight
+      const updateBodyWeightResponse = await fetch("/api/updateBodyWeight", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          currentBodyweight: parseFloat(bodyWeight),
+        }),
+      });
+
+      if (!updateBodyWeightResponse.ok) {
+        throw new Error("Failed to update body weight.");
+      }
+
       const response = await fetch("/api/workout-plans", {
         method: "POST",
         headers: {
@@ -156,7 +184,7 @@ const WorkoutPlanner: React.FC = () => {
             >
               <option value="">Choose Level</option>
               <option value="Novice">Novice</option>
-              <option value="Beginner">Beginner</option>
+              <option value="Beginner">Beginner</option>       
               <option value="Intermediate">Intermediate</option>
               <option value="Advanced">Advanced</option>
             </select>
@@ -187,9 +215,33 @@ const WorkoutPlanner: React.FC = () => {
           </div>
         )}
 
+        {step === 4 && (
+          <div>
+            <label className="block mb-2">Enter Your Body Weight:</label>
+            <input
+              type="number"
+              value={bodyWeight}
+              onChange={(e) => setBodyWeight(e.target.value)}
+              className="border border-gray-400 bg-gray-100 text-black p-2 rounded w-full"
+              placeholder="Enter your body weight in kilograms"
+            />
+          </div>
+        )}
+
+        {step === 5 && (
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Review and Submit</h2>
+            <p><strong>Goal:</strong> {goal}</p>
+            <p><strong>Level:</strong> {level}</p>
+            <p><strong>Equipment:</strong> {equipment.join(", ")}</p>
+            <p><strong>Body Weight:</strong> {bodyWeight} kg</p>
+
+          </div>
+        )}
+
         <div className="mt-6 flex justify-between">
           <button
-            onClick={prevStep}
+            onClick={handlePreviousStep}
             disabled={step === 1}
             className="bg-gray-600 text-white p-3 rounded"
           >
@@ -197,19 +249,19 @@ const WorkoutPlanner: React.FC = () => {
           </button>
           {step === totalSteps ? (
             <button
-            onClick={handleSubmit}
-            disabled={!isStepValid() || isLoading}
-            className={`bg-green-500 text-white p-3 rounded ${!isStepValid() && "opacity-50 cursor-not-allowed"}`}
-          >
-            {isLoading ? (
-              <FaSpinner className="animate-spin w-6 h-6 text-white" />
-            ) : (
-              "Generate Plan"
-            )}
-          </button>
+              onClick={handleSubmit}
+              disabled={!isStepValid() || isLoading}
+              className={`bg-green-500 text-white p-3 rounded ${!isStepValid() && "opacity-50 cursor-not-allowed"}`}
+            >
+              {isLoading ? (
+                <FaSpinner className="animate-spin w-6 h-6 text-white" />
+              ) : (
+                "Generate Plan"
+              )}
+            </button>
           ) : (
             <button
-              onClick={nextStep}
+              onClick={handleNextStep}
               disabled={!isStepValid()}
               className={`bg-blue-500 text-white p-3 rounded ${
                 !isStepValid() && "opacity-50 cursor-not-allowed"

@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
       "intensity": "intensity",\n
       "instructions": "instructions",\n
       "description": "description", \n
+      "caloriesBurned": 0, \n
       "isCompleted": false\n
       }\n]`;
 
