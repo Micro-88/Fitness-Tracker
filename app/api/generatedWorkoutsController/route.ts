@@ -82,6 +82,7 @@ export async function PUT(req: NextRequest) {
     generatedWorkout.intensity = intensity || generatedWorkout.intensity;
     generatedWorkout.instructions = instructions || generatedWorkout.instructions;
     generatedWorkout.description = description || generatedWorkout.description;
+    generatedWorkout.caloriesBurned = caloriesBurned || generatedWorkout.caloriesBurned;
 
     // Save the updated generated workout
     await generatedWorkout.save();

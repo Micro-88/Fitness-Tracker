@@ -14,6 +14,7 @@ const DashboardComponent: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading
   const [checkboxStates, setCheckboxStates] = useState<Record<string, boolean>>({});
+<<<<<<< HEAD
   const [chartData, setChartData] = useState<number[]>([0]); // Line chart data
   const [lineData, setLineData] = useState({
     labels: [], 
@@ -27,6 +28,10 @@ const DashboardComponent: React.FC = () => {
       },
     ],
   });
+=======
+  const [personalRecords, setPersonalRecords] = useState<any>(null); // State for personal records
+
+>>>>>>> 7331d1358308475bd0cd1769eede7d300c5b1355
   interface Workout {
     workoutId: string;
     workoutName: string;
@@ -36,6 +41,7 @@ const DashboardComponent: React.FC = () => {
     instructions: string;
     description: string;
     isCompleted: string;
+    METscore: number; // Add METscore field
   }
 
   interface ChartDataEntry {
@@ -69,6 +75,7 @@ const DashboardComponent: React.FC = () => {
     setCheckboxStates(initialCheckboxStates);
   }, [userProfile.id]);
 
+<<<<<<< HEAD
   const fetchChartData = useCallback(async () => {
     setIsLoading(true);
     const formData = {
@@ -105,6 +112,18 @@ const DashboardComponent: React.FC = () => {
       console.error('Error fetching chart data:', error);
     } finally {
       setIsLoading(false);
+=======
+  const fetchPersonalRecords = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/fetchPersonalRecords?userId=${userProfile.id}`);
+      if (!res.ok) {
+        throw new Error('Failed to fetch personal records');
+      }
+      const data = await res.json();
+      setPersonalRecords(data);
+    } catch (error) {
+      console.error('Error fetching personal records:', error);
+>>>>>>> 7331d1358308475bd0cd1769eede7d300c5b1355
     }
   }, [userProfile.id]);
 
@@ -118,8 +137,13 @@ const DashboardComponent: React.FC = () => {
     }
 
     fetchWorkOuts();
+<<<<<<< HEAD
     fetchChartData();
   }, [isClient, router, fetchWorkOuts, fetchChartData, userProfile?.id]);
+=======
+    fetchPersonalRecords(); // Fetch personal records
+  }, [isClient, router, fetchWorkOuts, fetchPersonalRecords, userProfile?.id]);
+>>>>>>> 7331d1358308475bd0cd1769eede7d300c5b1355
 
   if (!isClient) {
     return null;
@@ -192,10 +216,14 @@ const DashboardComponent: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update checkbox status");
+        throw new Error("Failed to update workout status");
       }
 
+      const data = await response.json();
       console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
+
+      // Refetch the personal records to update the display
+      await fetchPersonalRecords();
     } catch (error) {
       console.error("Error updating checkbox status:", error);
     }
@@ -310,6 +338,22 @@ const DashboardComponent: React.FC = () => {
     <div className="flex flex-col md:flex-row h-screen">
       <div className="md:w-1/2 p-4">
         <div className="bg-gray-800 shadow-md rounded-lg p-4 h-full">
+          {personalRecords ? (
+            <div className="mt-4">
+              <h2 className="text-lg font-semibold mb-4">Personal Records</h2>
+              <div className="text-sm font-semibold text-gray-600">
+                Total Calories Burned: <span className="font-normal">{personalRecords.totalCaloriesBurned}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Total Workout Duration: <span className="font-normal">{personalRecords.totalWorkoutDuration}</span>
+              </div>
+              <div className="text-sm font-semibold text-gray-600">
+                Total Workouts Finished: <span className="font-normal">{personalRecords.totalWorkoutsFinished}</span>
+              </div>
+            </div>
+          ) : (
+            <p>Loading personal records...</p>
+          )}
           <h2 className="text-lg font-semibold mb-4">Progress Graph</h2>
           <Line data={lineData} options={lineOptions} />
         </div>
