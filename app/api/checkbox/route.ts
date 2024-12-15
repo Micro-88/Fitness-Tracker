@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        //Create Entry in charts Table for Progress and date
         const chartEntry = await Chart.findOne({
             where: {
               userId,

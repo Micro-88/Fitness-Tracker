@@ -165,9 +165,7 @@ const DashboardComponent: React.FC = () => {
         throw new Error("Failed to update workout status");
       }
   
-      const data = await response.json();
       console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
-      console.log(data);
 
       // Call the updateCaloriesBurned API endpoint
       const updateCaloriesResponse = await fetch("/api/updateCaloriesBurned", {
@@ -182,9 +180,7 @@ const DashboardComponent: React.FC = () => {
         throw new Error("Failed to update calories burned");
       }
   
-      const updateCaloriesData = await updateCaloriesResponse.json();
       console.log(`Calories burned for workout ${workoutId} updated successfully`);
-      console.log(updateCaloriesData);
       
       // Refetch the personal records to update the display
       await fetchPersonalRecords();

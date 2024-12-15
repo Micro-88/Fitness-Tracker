@@ -1,6 +1,6 @@
 "use client";
 
-import { UserIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { UserIcon, HomeIcon, ClipboardIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
@@ -8,7 +8,7 @@ import clsx from "clsx";
 const links = [
   { name: "Home", href: "/dashboard", icon: HomeIcon },
   { name: "Profile", href: "/dashboard/profile", icon: UserIcon },
-  // { name: "Food Log", href: "/dashboard/foodLog", icon: UserIcon},
+  { name: "Food Log", href: "/dashboard/foodLog", icon: ClipboardIcon},
 ];
 
 export default function NavLinks() {
