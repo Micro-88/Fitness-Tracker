@@ -35,10 +35,40 @@ const DashboardComponent: React.FC = () => {
     updatedAt: Date;
   }
 
+  // interface Chart {
+  //   date: Date;
+  //   progress: number;
+  // }
+
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
   const [personalRecords, setPersonalRecords] = useState<PersonalRecord | null>(null);
+
+  const fetchChartData = useCallback(async () => {
+    const formData = {
+      userId: userProfile.id
+    }
+    const res = await fetch('/api/linedata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+    const data = await res.json();
+
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log(data);
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    console.log('!!!!!!!!!!!!!!!!!!!!!');
+
+  }, [userProfile.id]);
 
   const fetchWorkOuts = useCallback(async () => {
     const formData = {
@@ -221,12 +251,12 @@ const DashboardComponent: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">To-Do List</h2>
           <div className="flex space-x-4">
-            <button
+            {/* <button
               className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
               onClick={() => console.log("Edit Workout")}
             >
               Edit Workout
-            </button>
+            </button> */}
             <button
               className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
               onClick={handleGenerateWorkout}
@@ -316,6 +346,16 @@ const DashboardComponent: React.FC = () => {
           )}
           <h2 className="text-lg font-semibold mb-4">Progress Graph</h2>
           <Line data={lineData} options={lineOptions} />
+          <button
+              className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+              onClick={fetchChartData}
+            >
+              {isLoading ? (
+                <FaSpinner className="animate-spin w-6 h-6 text-white" />
+              ) : (
+                "Refresh Chart"
+              )}
+            </button>
         </div>
       </div>
 
