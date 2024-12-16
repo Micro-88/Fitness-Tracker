@@ -35,40 +35,56 @@ const DashboardComponent: React.FC = () => {
     updatedAt: Date;
   }
 
-  // interface Chart {
-  //   date: Date;
-  //   progress: number;
-  // }
+  interface Chart {
+    date: string;
+    progress: number;
+  }
 
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const router = useRouter();
   const userProfile = GetUserProfileInToken();
   const [personalRecords, setPersonalRecords] = useState<PersonalRecord | null>(null);
+  // const [chartData, setChartData] = useState<Chart[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);  // Array to store dates
+  const [progressData, setProgressData] = useState<number[]>([]);  // Array to store progress values
 
   const fetchChartData = useCallback(async () => {
     const formData = {
-      userId: userProfile.id
-    }
+        userId: userProfile.id
+    };
+
     const res = await fetch('/api/linedata', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
     });
-    const data = await res.json();
 
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log(data);
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
-    console.log('!!!!!!!!!!!!!!!!!!!!!');
+    const data: Chart[] = await res.json();
+    // setChartData(data);
 
-  }, [userProfile.id]);
+    // Separate dates and progress into two arrays
+    const labelsArray = data.map((entry) => entry.date);  // Extracting dates
+    const progressArray = data.map((entry) => entry.progress);  // Extracting progress
+    
+    setLabels(labelsArray);
+    setProgressData(progressArray);
+
+}, [userProfile.id]);
+
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log(labels);
+    // console.log(progressData);
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!!!!!!!!');
+
+    
 
   const fetchWorkOuts = useCallback(async () => {
     const formData = {
@@ -118,7 +134,8 @@ const DashboardComponent: React.FC = () => {
 
     fetchWorkOuts();
     fetchPersonalRecords(); // Fetch personal records
-  }, [isClient, router, fetchWorkOuts, fetchPersonalRecords, userProfile?.id]);
+    fetchChartData();
+  }, [isClient, router, fetchWorkOuts, fetchPersonalRecords, fetchChartData, userProfile?.id]);
 
   if (!isClient) {
     return null;
@@ -129,14 +146,14 @@ const DashboardComponent: React.FC = () => {
   }
 
   const lineData = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: labels,
     datasets: [
       {
         label: "Progress",
         fill: false,
         backgroundColor: "rgb(165 243 252)",
         borderColor: "rgb(34 211 238)",
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: progressData,
       },
     ],
   };
@@ -294,6 +311,7 @@ const DashboardComponent: React.FC = () => {
                       [workout.workoutId]: isChecked,
                     }));
                     handleCheckboxChange(workout.workoutId, isChecked);
+                    fetchChartData();
                   }}
                 />
                 <div className="text-sm font-semibold text-gray-600">

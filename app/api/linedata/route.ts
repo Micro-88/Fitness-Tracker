@@ -19,19 +19,15 @@ export async function POST(req: NextRequest) {
     });
 
     // Convert Sequelize instances to plain objects
-    const serializedData = chartData.map(entry => entry.get({ plain: true }));
+    const serializedData = chartData.map(entry => {
+      const plainEntry = entry.get({ plain: true });
+      return {
+        ...plainEntry,
+        date: plainEntry.date, // DATEONLY is already a string
+      };
+    });
 
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log(serializedData);
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
-      return NextResponse.json({ serializedData }, { status: 200 });
+      return NextResponse.json( serializedData, { status: 200 });
     } catch (error) {
       console.error('Error fetching Line Data:', error);
       return NextResponse.json({ error: 'Failed to fetch Line Data' }, { status: 500 });
