@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
-import sequelize from '../../db_connection.mjs';
-import GeneratedWorkout from '@/app/models/generateWorkout';
-import Chart from '@/app/models/chart';
+import sequelize from '../../config/db_connection.mjs';
+import GeneratedWorkout from '@/app/database/models/generateWorkout';
+import Chart from '@/app/database/models/chart';
 
 export async function POST(req: NextRequest) {
     const { userId, workoutId, checked } = await req.json(); // Accept both userId and workoutId

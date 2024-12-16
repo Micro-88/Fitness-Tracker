@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
-import { GetUserProfileInToken, UserProfileModel } from '../../helpers/profile.helper';
+import { GetUserProfileInToken, UserProfileModel } from '../../../helpers/profile.helper';
 
 const ProfileComponent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +24,7 @@ const ProfileComponent: React.FC = () => {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     if (!token) {
-      router.push('/login');
+      router.push('/pages/login');
       return;
     }
 
@@ -91,7 +91,7 @@ const ProfileComponent: React.FC = () => {
       if (res.ok) {
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
-        router.push('/login');
+        router.push('/pages/login');
       } else {
         setError('Failed to delete profile');
       }

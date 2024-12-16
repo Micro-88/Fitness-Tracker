@@ -36,7 +36,7 @@ const SignUp: React.FC = () => {
 
       if (response.ok) {
         console.log('User created successfully');
-        router.push('/login'); // Redirect to login page upon successful sign-up
+        router.push('/pages/login'); // Redirect to login page upon successful sign-up
       } else {
         const errorData = await response.json();
         console.error('Failed to create user:', errorData);
@@ -50,7 +50,7 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="w-full h-1/2 md:w-3/4 md:h-full bg-cover bg-center" style={{ backgroundImage: "url('/workout2.jpg')" }}></div>
+      <div className="w-full h-1/2 md:w-3/4 md:h-full bg-cover bg-center" style={{ backgroundImage: "url('/images/workout2.jpg')" }}></div>
       <div className="w-full h-1/2 md:w-1/4 md:h-full flex justify-center items-center bg-[#1d1919] p-4">
         <div className="w-full max-w-[300px] text-left">
           <h1 className="text-4xl mb-8 text-white text-center">Sign Up</h1>
@@ -85,7 +85,7 @@ const SignUp: React.FC = () => {
             <button type="submit" className="w-full p-2 bg-[#333] text-white border-none rounded-full cursor-pointer text-sm">Sign Up</button>
           </form>
           <p className="text-white mt-4 text-center">
-          Already have an account? <Link href="/login" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Log in</Link>
+          Already have an account? <Link href="/pages/login" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Log in</Link>
           </p>
           {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>

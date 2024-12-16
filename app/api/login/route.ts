@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import User from '../../models/user';
-import sequelize from '../../db_connection.mjs';
+import User from '../../database/models/user';
+import sequelize from '../../config/db_connection.mjs';
 import jwt from 'jsonwebtoken';
 const secretKey = 'your_secret_key';
 

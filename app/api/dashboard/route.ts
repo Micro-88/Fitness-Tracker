@@ -1,8 +1,8 @@
 import { NextResponse, NextRequest } from 'next/server';
-import sequelize from '../../db_connection.mjs';
-import Workout from '@/app/models/workout';
+import sequelize from '../../config/db_connection.mjs';
+import Workout from '@/app/database/models/workout';
 import { Op } from 'sequelize';
-import GeneratedWorkout from '@/app/models/generateWorkout';
+import GeneratedWorkout from '@/app/database/models/generateWorkout';
 
 export async function POST(req: NextRequest) {
     const { userId } = await req.json();

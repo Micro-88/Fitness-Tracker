@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { GetUserProfileInToken } from "../helpers/profile.helper";
+import { GetUserProfileInToken } from "../../helpers/profile.helper";
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
 
 const WorkoutPlanner: React.FC = () => {
@@ -134,7 +134,7 @@ const WorkoutPlanner: React.FC = () => {
       console.log(GenerateWorkout);
 
       // Redirect to the dashboard after successful plan generation
-      router.push('/dashboard');
+      router.push('/pages/dashboard');
       
     } catch (error) {
       console.error("Error generating workout plan:", error);

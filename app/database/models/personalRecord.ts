@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../db_connection.mjs';
+import sequelize from '../../config/db_connection.mjs';
 import User from './user';
 
 class PersonalRecord extends Model {

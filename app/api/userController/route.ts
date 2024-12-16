@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import User from '../../models/user';
-import sequelize from '../../db_connection.mjs';
+import User from '../../database/models/user';
+import sequelize from '../../config/db_connection.mjs';
 
 // GET /api/userController?id={id} (Single user) or GET /api/userController (All users)
 export async function GET(req: NextRequest) {

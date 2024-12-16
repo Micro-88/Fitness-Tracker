@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { GetUserProfileInToken, UserProfileModel } from '../../helpers/profile.helper';
+import { GetUserProfileInToken, UserProfileModel } from '../../../helpers/profile.helper';
 
 const FoodLog: React.FC = () => {
   const [foodName, setFoodName] = useState<string>("");
@@ -16,7 +16,7 @@ const FoodLog: React.FC = () => {
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
     if (!token) {
-      router.push("/loginpage");
+      router.push("/pages/loginpage");
       return;
     }
 

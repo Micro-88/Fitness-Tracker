@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 const links = [
-  { name: "Home", href: "/dashboard", icon: HomeIcon },
-  { name: "Profile", href: "/dashboard/profile", icon: UserIcon },
-  { name: "Food Log", href: "/dashboard/foodLog", icon: ClipboardIcon},
+  { name: "Home", href: "/pages/dashboard", icon: HomeIcon },
+  { name: "Profile", href: "/pages/dashboard/profile", icon: UserIcon },
+  { name: "Food Log", href: "/pages/dashboard/foodLog", icon: ClipboardIcon},
 ];
 
 export default function NavLinks() {

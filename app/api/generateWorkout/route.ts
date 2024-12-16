@@ -1,9 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import GeneratedWorkout from '@/app/models/generateWorkout';
-import WorkoutPlan from '../../models/workoutPlan';
-import Workout from '@/app/models/workout';
-import { GEMINI_API_KEY } from '../../database/config/config.mjs';
+import GeneratedWorkout from '@/app/database/models/generateWorkout';
+import WorkoutPlan from '../../database/models/workoutPlan';
+import Workout from '@/app/database/models/workout';
+import { GEMINI_API_KEY } from '../../config/config.mjs';
 
 export async function POST(req: NextRequest) {
   try {

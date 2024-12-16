@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
-import { GEMINI_API_KEY } from "@/app/database/config/config.mjs";
+import { GEMINI_API_KEY } from "@/src/database/config/config.mjs";
 
 export async function POST(req) {
   try {

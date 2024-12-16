@@ -1,9 +1,9 @@
 // File: /api/updateCaloriesBurned.ts
 import { NextRequest, NextResponse } from 'next/server';
-import GeneratedWorkout from '../../models/generateWorkout'; // Ensure correct import
-import User from '../../models/user';
-import Workout from '../../models/workout';
-import sequelize from '../../db_connection.mjs';
+import GeneratedWorkout from '../../database/models/generateWorkout'; // Ensure correct import
+import User from '../../database/models/user';
+import Workout from '../../database/models/workout';
+import sequelize from '../../config/db_connection.mjs';
 
 export async function PUT(req: NextRequest) {
   try {

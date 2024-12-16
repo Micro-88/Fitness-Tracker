@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start:backend": "node app/db_connection.mjs",
+    "start:backend": "node app/config/db_connection.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",

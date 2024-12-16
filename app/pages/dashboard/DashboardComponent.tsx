@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import { GetUserProfileInToken } from './../helpers/profile.helper';
+import { GetUserProfileInToken } from '../../helpers/profile.helper';
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
 
 Chart.register(...registerables);
@@ -128,7 +128,7 @@ const DashboardComponent: React.FC = () => {
 
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (!token) {
-      router.push('/login');
+      router.push('/pages/login');
       return;
     }
 
@@ -193,7 +193,7 @@ const DashboardComponent: React.FC = () => {
   };
 
   const handleGenerateWorkout = () => {
-    router.push('/workout_planner');
+    router.push('/pages/workout_planner');
   };
 
   const handleCheckboxChange = async (workoutId: string, checked: boolean) => {

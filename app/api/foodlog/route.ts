@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
-import sequelize from '../../db_connection.mjs';
-import FoodLog from '@/app/models/foodlog';
+import sequelize from '../../config/db_connection.mjs';
+import FoodLog from '@/app/database/models/foodlog';
 
 export async function POST(req: NextRequest) {
     const { userId } = await req.json();

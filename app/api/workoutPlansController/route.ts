@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import WorkoutPlan from '../../models/workoutPlan';
-import sequelize from '../../db_connection.mjs';
+import WorkoutPlan from '../../database/models/workoutPlan';
+import sequelize from '../../config/db_connection.mjs';
 
 // GET /api/workoutPlanController?id={id} (Single workoutPlan) or GET /api/workoutPlanController (All workoutPlans)
 export async function GET(req: NextRequest) {

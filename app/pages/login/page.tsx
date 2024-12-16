@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         } else {
           sessionStorage.setItem('token', data.token);
         }
-        router.push('/dashboard');
+        router.push('/pages/dashboard');
       } else {
         const errorData = await response.json();
         console.error('Failed to login:', errorData);
@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Background image for top section (full height on mobile, top half on large screens) */}
-      <div className="w-full h-1/2 md:w-3/4 md:h-full bg-cover bg-center" style={{ backgroundImage: "url('/workout2.jpg')" }}></div>
+      <div className="w-full h-1/2 md:w-3/4 md:h-full bg-cover bg-center" style={{ backgroundImage: "url('/images/workout2.jpg')" }}></div>
       
       {/* Form Section on the bottom (full height on mobile, bottom quarter on large screens) */}
       <div className="w-full h-1/2 md:w-1/4 md:h-full flex justify-center items-center bg-[#1d1919] p-4">
@@ -84,7 +84,7 @@ const Login: React.FC = () => {
           </form>
           {error && <p className="text-red-500 mt-4">{error}</p>}
           <p className="text-white mt-4 text-center">
-          Don&apos;t have an account? <Link href="/signup" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Sign up</Link>
+          Don&apos;t have an account? <Link href="/pages/signup" className="text-blue-500 underline hover:text-blue-700 transition duration-300">Sign up</Link>
           </p>
         </div>
       </div>

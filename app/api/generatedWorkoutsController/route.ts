@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import GeneratedWorkout from '../../models/generateWorkout'; // Adjust path if necessary
-import sequelize from '../../db_connection.mjs'; // Your database connection instance
+import GeneratedWorkout from '../../database/models/generateWorkout'; // Adjust path if necessary
+import sequelize from '../../config/db_connection.mjs'; // Your database connection instance
 
 // GET /api/generatedWorkoutController?id={id} (Single GeneratedWorkout) or GET /api/generatedWorkoutController (All GeneratedWorkouts)
 export async function GET(req: NextRequest) {

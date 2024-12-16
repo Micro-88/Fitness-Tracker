@@ -1,6 +1,6 @@
 // db_connection.mjs
 import { Sequelize } from 'sequelize';
-import config from './database/config/config.mjs';
+import config from './config.mjs';
 
 const dbOptions = config.development;
 
