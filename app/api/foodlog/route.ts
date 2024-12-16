@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 import FoodLog from '@/app/models/foodlog';
 
 export async function POST(req: NextRequest) {

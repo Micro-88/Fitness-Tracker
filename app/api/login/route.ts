@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import User from '../../models/user';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs'; // hashing implementation will implement later
 const secretKey = 'your_secret_key';
 
 export async function POST(req: NextRequest) {
@@ -14,12 +13,6 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'This account does not exist' }, { status: 404 });
     }
-
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    // if (!isPasswordValid) {
-    //   return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    // }
 
     const token = jwt.sign(
       { id: user.id, username: user.username, gender: user.gender, age: user.age },

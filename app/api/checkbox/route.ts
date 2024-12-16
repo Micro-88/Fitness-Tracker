@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 import GeneratedWorkout from '@/app/models/generateWorkout';
 import Chart from '@/app/models/chart';
 

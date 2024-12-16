@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 import Chart from '@/app/models/chart';
 
 export async function POST(req: NextRequest) {

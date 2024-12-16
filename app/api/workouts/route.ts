@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Workout from '../../models/workout';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 
 export async function POST(req: NextRequest) {
   try {

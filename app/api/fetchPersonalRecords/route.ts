@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import GeneratedWorkout from '../../models/generateWorkout';
 import PersonalRecord from '../../models/personalRecord';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);

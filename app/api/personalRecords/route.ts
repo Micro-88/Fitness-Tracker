@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import PersonalRecord from '../../models/personalRecord';
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 
 export async function POST(req: NextRequest) {
   try {

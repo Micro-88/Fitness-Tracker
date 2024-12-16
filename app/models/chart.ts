@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../db_connection'; // Your database instance
+import sequelize from '../db_connection.mjs'; // Your database instance
 import User from './user'; // Ensure User model is defined and imported
 
 class Chart extends Model {

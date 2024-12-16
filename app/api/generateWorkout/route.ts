@@ -3,13 +3,14 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import GeneratedWorkout from '@/app/models/generateWorkout';
 import WorkoutPlan from '../../models/workoutPlan';
 import Workout from '@/app/models/workout';
+import { GEMINI_API_KEY } from '../../database/config/config.mjs';
 
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await req.json();
 
     // Ensure the Gemini API Key is loaded
-    if (!process.env.GEMINI_API_KEY) {
+    if (!GEMINI_API_KEY) {
         console.error("Gemini API Key is missing");
         return NextResponse.json(
           { error: "Internal Server Error: API Key is missing" },
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
     }));
 
     // Integrate Gemini Chatbot
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     // Format the filtered data into a prompt

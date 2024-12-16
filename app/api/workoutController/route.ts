@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Workout from '../../models/workout'; // Adjust the path based on your directory structure
-import sequelize from '../../db_connection';
+import sequelize from '../../db_connection.mjs';
 
 // GET /api/workoutController?id={id} (Single workout) or GET /api/workoutController (All workouts)
 export async function GET(req: NextRequest) {
