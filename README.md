@@ -12,14 +12,20 @@ Fitness Tracker is a web application designed to help users monitor and manage t
 ## Setup
 
 1. Clone the repository:
-   <br>```git clone <https://github.com/Micro-88/Fitness-Tracker>```
-   <br>```cd fitness-tracker```
+```
+   git clone https://github.com/Micro-88/Fitness-Tracker
+   cd fitness-tracker
+```
 
 2. Install dependencies:
-   ```npm install --legacy-peer-deps```
+```
+   npm install --legacy-peer-deps
+```
 
 3. Run the setup script:
-   ```npm run dev:setup```
+```
+   npm run dev:setup
+```
 
 ## Environment Variables
 
@@ -41,7 +47,7 @@ The application uses the following environment variables, which are set with def
 
 ## Database Configuration
 
-The database configuration is set up in `config.mjs` with default values. You can update these values as needed.
+The database configuration is set up in `app/config/config.mjs` with default values. You can update these values as needed.
 
 ### config.mjs
 
@@ -86,7 +92,9 @@ export default config;
 
 To run the application, use the following command:
 
-```npm run dev:setup```
+```
+npm run dev:setup
+```
 
 This command will:
 1. Run the migration script.
