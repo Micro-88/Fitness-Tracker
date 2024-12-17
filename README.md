@@ -1,16 +1,25 @@
-# Fitness Tracker
+# 💪Fitness Tracker💪
+
+Fitness Tracker is a web application designed to help users monitor and manage their fitness activities. The application allows users to log workouts, track progress, and set fitness goals. It leverages the Gemini API to generate personalized workout plans based on user preferences and fitness levels.
+
+## Technologies Used
+
+[![My Skills](https://skillicons.dev/icons?i=nextjs,react,ts,sequelize,npm,git&perline=3&theme=dark&size=20)](https://skillicons.dev)
+- **Database**: MariaDB
+- **API**: Gemini API for workout generation
+- **Environment Management**: dotenv
 
 ## Setup
 
 1. Clone the repository:
-   git clone <https://github.com/Micro-88/Fitness-Tracker>
-   cd fitness-tracker
+   <br>```git clone <https://github.com/Micro-88/Fitness-Tracker>```
+   <br>```cd fitness-tracker```
 
 2. Install dependencies:
-   npm install --legacy-peer-deps
+   ```npm install --legacy-peer-deps```
 
 3. Run the setup script:
-   npm run dev:setup
+   ```npm run dev:setup```
 
 ## Environment Variables
 
@@ -25,10 +34,10 @@ The application uses the following environment variables, which are set with def
 
 ## Scripts
 
-- npm run dev:setup: Runs migrations, seeds the database, and starts the backend and frontend servers.
-- npm run dev: Starts the frontend server.
-- npm run migrate: Runs database migrations.
-- npm run seed: Seeds the database.
+- ```npm run dev:setup```: Runs migrations, seeds the database, and starts the backend and frontend servers.
+- ```npm run dev```: Starts the frontend server.
+- ```npm run migrate```: Runs database migrations.
+- ```npm run seed```: Seeds the database.
 
 ## Database Configuration
 
@@ -77,7 +86,7 @@ export default config;
 
 To run the application, use the following command:
 
-npm run dev:setup
+```npm run dev:setup```
 
 This command will:
 1. Run the migration script.
