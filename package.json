@@ -4,16 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start:backend": "node app/config/db_connection.mjs",
+    "start:backend": "npx cross-env node app/config/db_connection.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migration:create": "ts-node -r dotenv/config node_modules/.bin/sequelize-cli migration:create",
-    "migrate": "ts-node -r dotenv/config node_modules/.bin/sequelize-cli db:migrate",
-    "migrate:rollback": "ts-node -r dotenv/config node_modules/.bin/sequelize-cli db:migrate:undo",
-    "migrate:rollback:all": "ts-node -r dotenv/config node_modules/.bin/sequelize-cli db:migrate:undo:all",
-    "seed": "ts-node -r dotenv/config node_modules/.bin/sequelize-cli db:seed:all",
+    "migration:create": "npx cross-env dotenv/config sequelize-cli migration:create",
+    "migrate": "npx cross-env dotenv/config sequelize-cli db:migrate",
+    "migrate:rollback": "npx cross-env dotenv/config sequelize-cli db:migrate:undo",
+    "migrate:rollback:all": "npx cross-env dotenv/config sequelize-cli db:migrate:undo:all",
+    "seed": "npx cross-env dotenv/config sequelize-cli db:seed:all",
     "dev:setup": "npm run migrate && npm run seed && concurrently \"npm run start:backend\" \"npm run dev\""
   },
   "dependencies": {
