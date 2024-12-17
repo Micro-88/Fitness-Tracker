@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       password: passwordRef.current?.value || '',
     };
 
-    console.log('Submitting form data:', formData);
+    // console.log('Submitting form data:', formData);
 
     try {
       const response = await fetch('/api/login', {
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Login successful:', data);
+        // console.log('Login successful:', data);
         if (rememberMe) {
           localStorage.setItem('token', data.token);
         } else {

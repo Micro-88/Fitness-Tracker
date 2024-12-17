@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import workoutPlan from '../../database/models/workoutPlan';
 import Workout from '../../database/models/workout';
 import sequelize from '../../config/db_connection.mjs';
-import { Op } from 'sequelize';  // Import Op for the 'in' operator
+import { Op } from 'sequelize'; 
 
 // POST request to create a workout plan based on user input
 export async function POST(req: NextRequest) {

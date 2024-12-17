@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../../config/db_connection.mjs'; // Your database instance
-import User from './user'; // Ensure User model is defined and imported
+import sequelize from '../../config/db_connection.mjs'; 
+import User from './user'; 
 
 class Chart extends Model {
   declare id: number;
@@ -34,7 +34,7 @@ Chart.init(
   },
   {
     sequelize,
-    tableName: 'Chart', // Ensure the table name matches the migration
+    tableName: 'Chart', 
     timestamps: true, // Sequelize will automatically handle createdAt and updatedAt
   }
 );

@@ -1,18 +1,18 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../../config/db_connection.mjs'; // Your database instance
-import User from './user'; // Ensure User model is defined and imported
-import Workout from './workout'; // Ensure Workout model is defined and imported
+import sequelize from '../../config/db_connection.mjs'; 
+import User from './user'; 
+import Workout from './workout'; 
 
 class GeneratedWorkout extends Model {
   declare id: number;
   declare workoutId: number;
-  declare userId: number; // Corrected the typo
+  declare userId: number; 
   declare duration: string;
   declare intensity: string;
   declare instructions: string;
   declare description: string;
-  declare caloriesBurned: number; // Corrected the data type
-  declare isCompleted: boolean; // Add the isCompleted field
+  declare caloriesBurned: number; 
+  declare isCompleted: boolean; 
 }
 
 GeneratedWorkout.init(
@@ -54,15 +54,15 @@ GeneratedWorkout.init(
       allowNull: true, // Made nullable as calories burned can be optional
     },
     isCompleted: {
-      type: DataTypes.BOOLEAN, // Add the new field here
+      type: DataTypes.BOOLEAN, 
       allowNull: false, // Mark as required
       defaultValue: false, // Default value is false
     },
   },
   {
     sequelize,
-    modelName: 'GeneratedWorkout', // Consistent with model name
-    tableName: 'GeneratedWorkouts', // Ensure the table name matches the migration
+    modelName: 'GeneratedWorkout', 
+    tableName: 'GeneratedWorkouts', 
     timestamps: true, // Sequelize will automatically handle createdAt and updatedAt
   }
 );

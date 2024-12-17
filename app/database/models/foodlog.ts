@@ -1,10 +1,10 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../../config/db_connection.mjs'; // Your database instance
-import User from './user'; // Ensure User model is defined and imported
+import sequelize from '../../config/db_connection.mjs'; 
+import User from './user'; 
 
 class FoodLog extends Model {
   declare id: number;
-  declare userId: number; // Corrected the typo
+  declare userId: number; 
   declare food_name: string;
   declare calories: string;
 }
@@ -33,8 +33,8 @@ FoodLog.init(
   },
   {
     sequelize,
-    tableName: 'FoodLog', // Ensure the table name matches the migration
-    timestamps: true, // Sequelize will automatically handle createdAt and updatedAt
+    tableName: 'FoodLog', 
+    timestamps: true, 
   }
 );
 

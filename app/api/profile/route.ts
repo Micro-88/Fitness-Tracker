@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '../../database/models/user';
 import sequelize from '../../config/db_connection.mjs';
 
-const SECRET_KEY = 'your-secret-key';
+const SECRET_KEY = 'fitness';
   
 export async function PUT(req: NextRequest) {
   const { userId, username, age, gender, password } = await req.json();

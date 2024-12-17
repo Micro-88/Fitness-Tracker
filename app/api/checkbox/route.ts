@@ -13,10 +13,6 @@ export async function POST(req: NextRequest) {
 
     const formattedDate = `${year}-${month}-${day}`;
 
-    console.log(userId);
-    console.log(workoutId);
-    console.log(checked);
-
     const isCompleted = checked
     try {
 
@@ -54,7 +50,6 @@ export async function POST(req: NextRequest) {
             
             await chartEntry.save();
 
-            console.log('Updated progress in chart:', chartEntry.progress);
         } else if (checked) {
             // If no entry exists for today and checkbox is checked, create a new one
             const newChartEntry = await Chart.create({
@@ -63,7 +58,6 @@ export async function POST(req: NextRequest) {
                 progress: 1, // Start progress with 1 for the first check
             });
 
-            console.log('New chart entry created:', newChartEntry);
         }
 
         // Step 3: Respond with success

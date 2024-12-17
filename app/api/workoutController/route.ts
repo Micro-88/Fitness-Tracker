@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Workout from '../../database/models/workout'; // Adjust the path based on your directory structure
+import Workout from '../../database/models/workout'; 
 import sequelize from '../../config/db_connection.mjs';
 
 // GET /api/workoutController?id={id} (Single workout) or GET /api/workoutController (All workouts)

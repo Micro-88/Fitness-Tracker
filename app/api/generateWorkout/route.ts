@@ -18,8 +18,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-    // Log incoming request data
-    console.log('User ID:', userId);
+ 
 
     // Fetch existing workout plans from the workoutPlan table
     const userWorkoutPlans = await WorkoutPlan.findAll({
@@ -27,9 +26,6 @@ export async function POST(req: NextRequest) {
       attributes: ['workoutId'], // Only select the workoutId column
     });
   
-    // Log the retrieved data
-    // console.log('Existing workout plans from workoutPlan table:', existingWorkoutPlans);
-
       // Extract all workoutIds from the workoutPlan table
     const workoutIds = userWorkoutPlans.map(plan => plan.workoutId);
     
@@ -38,9 +34,6 @@ export async function POST(req: NextRequest) {
           id: workoutIds,  // Filter by workoutIds
         },
       });
-
-    // Log the detailed workout information
-    // console.log('Workout details from Workout table:', workoutsDetails);
 
     // Filter specific workout information
     const specificWorkoutData = workoutsDetails.map(workout => ({
@@ -69,7 +62,7 @@ export async function POST(req: NextRequest) {
       "isCompleted": false\n
       }\n]`;
 
-    console.log("Sending prompt to Gemini API:", prompt);
+    // console.log("Sending prompt to Gemini API:", prompt);
 
     // Send request to Gemini API
     const result = await model.generateContent(prompt);
@@ -77,12 +70,12 @@ export async function POST(req: NextRequest) {
 
     // Extract the generated content
     const geminiOutput = await response.text();
-    console.log("Generated response from Gemini API:", geminiOutput);
+    // console.log("Generated response from Gemini API:", geminiOutput);
 
     // Parse the Gemini response (assumed to be in JSON format)
     const workoutPlanData = JSON.parse(geminiOutput);
 
-    console.log('Generated workout plan data:', workoutPlanData);
+    // console.log('Generated workout plan data:', workoutPlanData);
 
     // Check if the user already has workout plans
     const existingWorkouts = await GeneratedWorkout.findAll({ where: { userId } });

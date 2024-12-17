@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../../config/db_connection.mjs'; // Your database instance
-
+import sequelize from '../../config/db_connection.mjs'; 
 enum Goal {                                  
   Lose_Weight = 'Lose_Weight', 
   Gain_Strength = 'Gain_Strength',

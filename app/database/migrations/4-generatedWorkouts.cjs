@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'Workouts',  // Ensure the reference table name matches your model name
+          model: 'Workouts',  
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'users',  // Ensure the reference table name matches your model name
+          model: 'users',  
           key: 'id',
         },
         onUpdate: 'CASCADE',

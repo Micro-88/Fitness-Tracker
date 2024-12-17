@@ -131,7 +131,7 @@ const WorkoutPlanner: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
-      console.log(GenerateWorkout);
+      // console.log(GenerateWorkout);
 
       // Redirect to the dashboard after successful plan generation
       router.push('/pages/dashboard');

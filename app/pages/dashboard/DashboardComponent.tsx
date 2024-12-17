@@ -75,19 +75,6 @@ const DashboardComponent: React.FC = () => {
 
 }, [userProfile.id]);
 
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log(labels);
-    // console.log(progressData);
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!');
-
-    
-
   const fetchWorkOuts = useCallback(async () => {
     const formData = {
       userId: userProfile.id
@@ -217,7 +204,7 @@ const DashboardComponent: React.FC = () => {
         throw new Error("Failed to update workout status");
       }
   
-      console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
+      // console.log(`Checkbox for workout ${workoutId} updated to ${checked}`);
 
       // Call the updateCaloriesBurned API endpoint
       const updateCaloriesResponse = await fetch("/api/updateCaloriesBurned", {
@@ -232,7 +219,7 @@ const DashboardComponent: React.FC = () => {
         throw new Error("Failed to update calories burned");
       }
   
-      console.log(`Calories burned for workout ${workoutId} updated successfully`);
+      // console.log(`Calories burned for workout ${workoutId} updated successfully`);
       
       // Refetch the personal records to update the display
       await fetchPersonalRecords();

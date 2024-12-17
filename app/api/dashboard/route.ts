@@ -64,17 +64,7 @@ export async function POST(req: NextRequest) {
       return null; // If no matching workout is found
     }).filter(Boolean); // Filter out null values
 
-    // Step 4: Return the DisplayWorkouts to the front-end
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test START HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log(displayWorkouts);
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    // console.log('!!!!!!!!!!!!!!!!!!!!!Test END HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
+    // Step 4: Respond with the displayWorkouts
     return NextResponse.json({ userId, displayWorkouts }, { status: 200 });
     } catch (error) {
       console.error('Error fetching workout plans:', error);

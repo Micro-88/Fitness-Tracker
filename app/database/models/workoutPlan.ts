@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../../config/db_connection.mjs'; // Your database instance
-import User from './user'; // Use import instead of require
-import Workout from './workout'; // Use import instead of require
+import sequelize from '../../config/db_connection.mjs'; 
+import User from './user'; 
+import Workout from './workout'; 
 
 class WorkoutPlan extends Model {
   declare id: number;

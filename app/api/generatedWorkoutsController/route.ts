@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import GeneratedWorkout from '../../database/models/generateWorkout'; // Adjust path if necessary
-import sequelize from '../../config/db_connection.mjs'; // Your database connection instance
+import GeneratedWorkout from '../../database/models/generateWorkout'; 
+import sequelize from '../../config/db_connection.mjs'; 
 
 // GET /api/generatedWorkoutController?id={id} (Single GeneratedWorkout) or GET /api/generatedWorkoutController (All GeneratedWorkouts)
 export async function GET(req: NextRequest) {
@@ -95,26 +95,4 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-// DELETE /api/generatedWorkoutController?id={id}
-// export async function DELETE(req: NextRequest) {
-//   const { searchParams } = new URL(req.url);
-//   const generatedWorkoutId = searchParams.get('id');
 
-//   try {
-//     await sequelize.authenticate();
-
-//     // Find the generated workout by its ID
-//     const generatedWorkout = await GeneratedWorkout.findByPk(generatedWorkoutId);
-//     if (!generatedWorkout) {
-//       return NextResponse.json({ error: 'Generated Workout not found' }, { status: 404 });
-//     }
-
-//     // Delete the generated workout
-//     await generatedWorkout.destroy();
-
-//     return NextResponse.json({ message: 'Generated Workout deleted successfully' }, { status: 200 });
-//   } catch (error) {
-//     console.error('Error deleting generated workout:', error);
-//     return NextResponse.json({ error: 'Failed to delete generated workout' }, { status: 500 });
-//   }
-// }

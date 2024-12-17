@@ -23,7 +23,7 @@ const SignUp: React.FC = () => {
       gender: gender,
     };
 
-    console.log('Submitting form data:', formData);
+    // console.log('Submitting form data:', formData);
 
     try {
       const response = await fetch('/api/userController', {
@@ -35,7 +35,7 @@ const SignUp: React.FC = () => {
       });
 
       if (response.ok) {
-        console.log('User created successfully');
+        // console.log('User created successfully');
         router.push('/pages/login'); // Redirect to login page upon successful sign-up
       } else {
         const errorData = await response.json();
