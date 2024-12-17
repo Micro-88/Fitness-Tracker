@@ -295,7 +295,7 @@ const DashboardComponent: React.FC = () => {
 
         <div className="border-t-2 border-gray-300 mb-4"></div>
 
-        <ul className="space-y-4 h-96 overflow-y-auto">
+        <ul className="space-y-4 h-[832px] overflow-y-auto">
           {workouts && workouts.length > 0 ? (
             workouts.map((workout) => (
               <li key={workout.workoutId} className="bg-gray-100 p-4 rounded-lg shadow-md relative">
@@ -345,27 +345,28 @@ const DashboardComponent: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="md:w-1/2 p-4">
-        <div className="bg-gray-800 shadow-md rounded-lg p-4 h-full">
+        <div className="bg-gray-800 shadow-md rounded-lg p-4 pt-0.5 h-full">
           {personalRecords ? (
-            <div className="mt-4">
+            <div className="mt-4 bg-gray-700 p-4 rounded-lg">
               <h2 className="text-lg font-semibold mb-4">Personal Records</h2>
-              <div className="text-sm font-semibold text-gray-600">
+              <div className="text-sm font-semibold text-white">
                 Total Calories Burned: <span className="font-normal">{personalRecords.totalCaloriesBurned}</span>
               </div>
-              <div className="text-sm font-semibold text-gray-600">
+              <div className="text-sm font-semibold text-white">
                 Total Workout Duration: <span className="font-normal">{personalRecords.totalWorkoutDuration}</span>
               </div>
-              <div className="text-sm font-semibold text-gray-600">
+              <div className="text-sm font-semibold text-white">
                 Total Workouts Finished: <span className="font-normal">{personalRecords.totalWorkoutsFinished}</span>
               </div>
             </div>
           ) : (
             <p>Loading personal records...</p>
           )}
-          <h2 className="text-lg font-semibold mb-4">Progress Graph</h2>
-          <Line data={lineData} options={lineOptions} />
-          <button
-              className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+          <div className="mt-8 bg-gray-700 p-4 rounded-lg">
+            <h2 className="text-lg font-semibold mb-4">Progress Graph</h2>
+            <Line data={lineData} options={lineOptions} />
+            <button
+              className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 mt-4"
               onClick={fetchChartData}
             >
               {isLoading ? (
@@ -374,6 +375,7 @@ const DashboardComponent: React.FC = () => {
                 "Refresh Chart"
               )}
             </button>
+          </div>
         </div>
       </div>
 

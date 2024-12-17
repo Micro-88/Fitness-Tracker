@@ -1,17 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcrypt';
 import User from '../../database/models/user';
 import sequelize from '../../config/db_connection.mjs';
 import jwt from 'jsonwebtoken';
-const secretKey = 'your_secret_key';
+
+const secretKey = 'fitness';
 
 export async function POST(req: NextRequest) {
   try {
-    const { username } = await req.json();
+    const { username, password } = await req.json();
     await sequelize.authenticate();
     const user = await User.findOne({ where: { username } });
 
     if (!user) {
       return NextResponse.json({ error: 'This account does not exist' }, { status: 404 });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
     }
 
     const token = jwt.sign(
