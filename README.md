@@ -4,7 +4,7 @@ Fitness Tracker is a web application designed to help users monitor and manage t
 
 ## Technologies Used
 
-[![My Skills](https://skillicons.dev/icons?i=nextjs,react,ts,sequelize,npm,git&perline=3&theme=dark&size=20)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nextjs,react,ts,sequelize,npm,git,js&perline=3&theme=dark&size=20)](https://skillicons.dev)
 - **Database**: MariaDB
 - **API**: Gemini API for workout generation
 - **Environment Management**: dotenv
