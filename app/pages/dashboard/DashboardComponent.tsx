@@ -6,6 +6,7 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { GetUserProfileInToken } from '../../helpers/profile.helper';
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
+import LoadingPage from '../../ui/LoadingPage'; // Import the LoadingPage component
 
 Chart.register(...registerables);
 
@@ -13,6 +14,7 @@ const DashboardComponent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading
+  const [isGenerating, setIsGenerating] = useState(false); // State for generating new plan
   const [checkboxStates, setCheckboxStates] = useState<Record<string, boolean>>({});
   interface Workout {
     workoutId: string;
@@ -193,7 +195,10 @@ const DashboardComponent: React.FC = () => {
   };
 
   const handleGenerateWorkout = () => {
-    router.push('/pages/workout_planner');
+    setIsGenerating(true); // Set generating state to true
+    setTimeout(() => {
+      router.push('/pages/workout_planner');
+    }, 2000); // Delay for 2 seconds
   };
 
   const handleCheckboxChange = async (workoutId: string, checked: boolean) => {
@@ -341,6 +346,10 @@ const DashboardComponent: React.FC = () => {
       </div>
     );
   };
+
+  if (isGenerating) {
+    return <LoadingPage />; // Render LoadingPage when generating new plan
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen">

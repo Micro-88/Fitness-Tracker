@@ -1,0 +1,24 @@
+/* LoadingPage.css */
+@keyframes blink {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .dot1 {
+    animation: blink 1s infinite 0s;
+  }
+  
+  .dot2 {
+    animation: blink 1s infinite 0.2s;
+  }
+  
+  .dot3 {
+    animation: blink 1s infinite 0.4s;
+  }
