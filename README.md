@@ -100,3 +100,7 @@ This command will:
 1. Run the migration script.
 2. Run the seed script.
 3. Start both the backend and frontend servers concurrently.
+
+## Note
+
+If the workouts do not appear after generating a workout, please click the "Refresh List" button to reload the workouts.
